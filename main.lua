@@ -1,8 +1,4 @@
-Objects = require "objects.object"
-Sprite = require "objects.sprite"
-Vector = require "vector"
-require "mathfunctions"
-require "binding"
+require "lib"
 
 love.graphics.setDefaultFilter("nearest", "nearest")
 Sprite.default_sprite_x = 3
@@ -92,6 +88,14 @@ Objects.create_type_from("balling_player", "player", {
 })
 
 function love.load()
+    local tilemap = Tilemap.new("tilemap.png", 16, 10, 10)
+    tilemap.scale = 3
+    for i = 0, 50 do
+        local x = love.math.random(1, 10)
+        local y = love.math.random(1, 10)
+        tilemap:set_cell_state(x, y, true)
+    end
+
     Objects.create_object("balling_player")
     Objects.create_object("pauser")
 end

@@ -1,3 +1,9 @@
+Objects = require "objects.object"
+Sprite = require "objects.sprite"
+Tilemap = require "tools.tilemap"
+Vector = require "vector"
+require "mathfunctions"
+
 
 function love.directorydropped(path)
     Objects.call_on_all("on_directory_drop", { path })
@@ -69,5 +75,6 @@ end
 function love.draw()
     love.graphics.setBackgroundColor(0.2, 0.2, 0.2)
 
+    Tilemap.draw_all()
     Objects.draw_objects()
 end
