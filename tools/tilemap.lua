@@ -44,8 +44,6 @@ local function set_cell_state(self, x, y, is_filled)
             self.tiles[xx][yy] = get_autotile_tile(self, xx, yy)
         end
 
-        print(ux, uy)
-
         ux = ux + 1
         if ux > 1 then
             ux = -1
