@@ -26,23 +26,9 @@ end
 
 function object.process_object(o, dt)
     if o.sprite ~= nil then
-        local sprite = o.sprite
-        sprite._time = sprite._time + dt
-
-        if sprite._time > 1 / sprite.fps then
-            sprite.frame = math.wrap(sprite.frame + 1, sprite.animation_start, sprite.animation_end)
-            sprite._time = 0
-        end
+        Sprite.process(o.sprite, dt)
     end
-
-    for _, timer in pairs(o.timers) do
-        timer.time = timer.time - dt
-
-        if timer.time < 0 and not timer.is_over then
-            timer.func(o)
-            timer.is_over = true
-        end
-    end
+    timers.process(o, dt)
 
     if o.on_update then
         o:on_update(dt)

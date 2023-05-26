@@ -1,5 +1,5 @@
 
-local sprite_table = {
+local sprites = {
     default_sprite_x = 1,
     default_sprite_y = 1,
 }
@@ -33,7 +33,7 @@ end
 ---@param frame_count integer? Default is 1
 ---@param fps number? Default is 10
 ---@return table
-function sprite_table.new(path, frame_count, fps)
+function sprites.new(path, frame_count, fps)
     frame_count = frame_count or 1
     fps = fps or 10
 
@@ -41,8 +41,8 @@ function sprite_table.new(path, frame_count, fps)
         path = path,
         texture = love.graphics.newImage(path),
         rotation = 0,
-        scale_x = sprite_table.default_sprite_x,
-        scale_y = sprite_table.default_sprite_y,
+        scale_x = sprites.default_sprite_x,
+        scale_y = sprites.default_sprite_y,
         offset_x = 0,
         offset_y = 0,
         frame_count = frame_count,
@@ -57,4 +57,13 @@ function sprite_table.new(path, frame_count, fps)
     }
 end
 
-return sprite_table
+function sprites.process(sprite, dt)
+    sprite._time = sprite._time + dt
+
+    if sprite._time > 1 / sprite.fps then
+        sprite.frame = math.wrap(sprite.frame + 1, sprite.animation_start, sprite.animation_end)
+        sprite._time = 0
+    end
+end
+
+return sprites

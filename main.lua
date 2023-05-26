@@ -39,7 +39,7 @@ Objects.create_type("red_ball", {
     end,
     on_draw = function(self)
         local percentage = self.timers.destroy.time / self.timers.destroy.total_time
-        love.graphics.setColor(1, 1, 1, percentage)
+        love.graphics.setColor(1, 0, 0, percentage)
         love.graphics.circle("fill", self.x, self.y, 32 * percentage)
     end
 })
@@ -56,10 +56,6 @@ Objects.create_type("player", {
 
     vx = 0,
     vy = 0,
-
-    on_create = function(self)
-        print("test")
-    end,
 
     on_update = function(self, dt)
         local ix, iy = Vector.get_input_direction("w", "a", "s", "d")
@@ -80,21 +76,14 @@ Objects.create_type("player", {
 })
 
 Objects.create_type_from("balling_player", "player", {
-    can_place_ball = true,
-
-    ball_cooldown = function(self)
-        self.can_place_ball = true
-    end,
-
     on_create = function(self)
-        self:call_from_base("on_create", { self })
-        self:create_timer("ball_cooldown", self.ball_cooldown, 0.25)
+        self:create_timer("ball_cooldown", nil, 0.25)
     end,
 
     on_update = function(self, dt)
         self:call_from_base("on_update", { self, dt })
 
-        if love.keyboard.isDown("space") and self.can_place_ball then
+        if love.keyboard.isDown("space") and self.timers.ball_cooldown.is_over then
             Objects.create_object_at("red_ball", self.x, self.y)
             self.timers.ball_cooldown:start()
             self.can_place_ball = false

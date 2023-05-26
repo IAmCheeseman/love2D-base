@@ -20,4 +20,17 @@ function timers.create_timer(self, name, func, time)
     }
 end
 
+function timers.process(object, dt)
+    for _, timer in pairs(object.timers) do
+        timer.time = timer.time - dt
+
+        if timer.time < 0 and not timer.is_over then
+            if timer.func then
+                timer.func(object)
+            end
+            timer.is_over = true
+        end
+    end
+end
+
 return timers
