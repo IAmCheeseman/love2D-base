@@ -107,6 +107,30 @@ function object.create_type(name, o)
     object_types[name] = o
 end
 
+local function call_from_base(self, name, args)
+    object_types[self.inherits_from][name](unpack(args))
+end
+
+function object.create_type_from(name, inherited, o)
+    if object_types[name] ~= nil then
+        error("Object with the name of '" .. name "' already exists.")
+    end
+    if object_types[inherited] == nil then
+        error("'" .. name .. "'cannot inherit '" .. inherited "' because it does not exist.")
+    end
+
+    local derived = deep_copy(object_types[inherited])
+
+    for k, v in pairs(o) do
+        derived[k] = v
+    end
+
+    derived.inherits_from = inherited
+    derived.call_from_base = call_from_base
+
+    object_types[name] = derived
+end
+
 function object.create_object(object_type)
     if object_types[object_type] == nil then
         error("Object of type `" .. object_type .. "` doesn't exist.")

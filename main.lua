@@ -57,14 +57,8 @@ Objects.create_type("player", {
     vx = 0,
     vy = 0,
 
-    can_place_ball = true,
-
-    ball_cooldown = function(self)
-        self.can_place_ball = true
-    end,
-
     on_create = function(self)
-        self:create_timer("ball_cooldown", self.ball_cooldown, 0.25)
+        print("test")
     end,
 
     on_update = function(self, dt)
@@ -82,6 +76,23 @@ Objects.create_type("player", {
 
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
+    end
+})
+
+Objects.create_type_from("balling_player", "player", {
+    can_place_ball = true,
+
+    ball_cooldown = function(self)
+        self.can_place_ball = true
+    end,
+
+    on_create = function(self)
+        self:call_from_base("on_create", { self })
+        self:create_timer("ball_cooldown", self.ball_cooldown, 0.25)
+    end,
+
+    on_update = function(self, dt)
+        self:call_from_base("on_update", { self, dt })
 
         if love.keyboard.isDown("space") and self.can_place_ball then
             Objects.create_object_at("red_ball", self.x, self.y)
@@ -92,6 +103,6 @@ Objects.create_type("player", {
 })
 
 function love.load()
-    Objects.create_object("player")
+    Objects.create_object("balling_player")
     Objects.create_object("pauser")
 end
