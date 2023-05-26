@@ -1,0 +1,15 @@
+{
+    "Lua.diagnostics.globals": [
+        "point",
+        "love"
+    ],
+    "Lua.workspace.library": [
+        "/home/chee/.config/Code/User/globalStorage/sumneko.lua/addonManager/addons/love2d/module/library",
+        "/home/chee/.vscode/extensions/sumneko.lua-3.6.20-linux-x64/server/meta/352eba50"
+    ],
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.runtime.special": {
+        "love.filesystem.load": "loadfile"
+    },
+    "Lua.workspace.checkThirdParty": false
+}
