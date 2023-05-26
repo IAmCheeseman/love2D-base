@@ -18,13 +18,13 @@ Objects.create_type("pauser", {
     end,
 
     on_create = function(self)
-        self:create_timer("quit", self.on_quit_timeout)
+        self:create_timer("quit", self.on_quit_timeout, 0.5)
     end,
 
     on_key_pressed = function(self, key, _, is_repeat)
         if key == "escape" and not is_repeat then
             Objects.are_paused = not Objects.are_paused
-            self.timers.quit:start(0.5)
+            self.timers.quit:start()
         end
     end
 })
@@ -34,11 +34,11 @@ Objects.create_type("red_ball", {
         Objects.destroy_object(self)
     end,
     on_create = function(self)
-        self:create_timer("destroy", self.destroy_timer)
-        self.timers.destroy:start(3)
+        self:create_timer("destroy", self.destroy_timer, 3)
+        self.timers.destroy:start()
     end,
     on_draw = function(self)
-        local percentage = self.timers.destroy.time / 3
+        local percentage = self.timers.destroy.time / self.timers.destroy.total_time
         love.graphics.setColor(1, 1, 1, percentage)
         love.graphics.circle("fill", self.x, self.y, 32 * percentage)
     end
@@ -64,7 +64,7 @@ Objects.create_type("player", {
     end,
 
     on_create = function(self)
-        self:create_timer("ball_cooldown", self.ball_cooldown)
+        self:create_timer("ball_cooldown", self.ball_cooldown, 0.25)
     end,
 
     on_update = function(self, dt)
@@ -85,7 +85,7 @@ Objects.create_type("player", {
 
         if love.keyboard.isDown("space") and self.can_place_ball then
             Objects.create_object_at("red_ball", self.x, self.y)
-            self.timers.ball_cooldown:start(0.25)
+            self.timers.ball_cooldown:start()
             self.can_place_ball = false
         end
     end

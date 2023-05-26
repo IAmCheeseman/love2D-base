@@ -1,4 +1,6 @@
 
+local timers = require "objects.timer"
+
 local object = {
     are_paused = false,
 }
@@ -78,20 +80,6 @@ function object.call_on_all(function_name, values)
     end
 end
 
-local function start_timer(self, time)
-    self.time = time
-    self.is_over = false
-end
-
-local function create_timer(self, name, func)
-    self.timers[name] = {
-        start = start_timer,
-        time = 0,
-        is_over = false,
-        func = func
-    }
-end
-
 local function set_property_default(o, property, value)
     if o[property] ~= nil then
         return
@@ -109,7 +97,7 @@ function object.create_type(name, o)
     set_property_default(o, "pause_mode", "normally")
 
     o.type = name
-    o.create_timer = create_timer
+    o.create_timer = timers.create_timer
     o.timers = {}
 
     if o.on_draw == nil then
