@@ -89,7 +89,7 @@ end
 
 function object.create_type(name, o)
     if object_types[name] ~= nil then
-        error("Object with the name of '" .. name "' already exists.")
+        error("Object with the name of '" .. name .. "' already exists.")
     end
 
     set_property_default(o, "x", 0)
@@ -113,10 +113,10 @@ end
 
 function object.create_type_from(name, inherited, o)
     if object_types[name] ~= nil then
-        error("Object with the name of '" .. name "' already exists.")
+        error("Object with the name of '" .. name .. "' already exists.")
     end
     if object_types[inherited] == nil then
-        error("'" .. name .. "'cannot inherit '" .. inherited "' because it does not exist.")
+        error("'" .. name .. "' cannot inherit '" .. inherited .. "' because it does not exist.")
     end
 
     local derived = deep_copy(object_types[inherited])
