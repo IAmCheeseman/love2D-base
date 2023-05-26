@@ -73,7 +73,7 @@ end
 function object.call_on_all(function_name, values)
     for _, v in ipairs(objects) do
         if v[function_name] ~= nil and not is_object_paused(v) then
-            v[function_name](unpack(values))
+            v[function_name](v, unpack(values))
         end
     end
 end

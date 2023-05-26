@@ -11,9 +11,20 @@ Sprite.default_sprite_y = 3
 Objects.create_type("pauser", {
     pause_mode = "never",
 
-    on_key_pressed = function(key, _, is_repeat)
+    on_quit_timeout = function(self)
+        if love.keyboard.isDown("escape") then
+            love.window.close()
+        end
+    end,
+
+    on_create = function(self)
+        self:create_timer("quit", self.on_quit_timeout)
+    end,
+
+    on_key_pressed = function(self, key, _, is_repeat)
         if key == "escape" and not is_repeat then
             Objects.are_paused = not Objects.are_paused
+            self.timers.quit:start(0.5)
         end
     end
 })
