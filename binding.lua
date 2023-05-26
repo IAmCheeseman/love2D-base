@@ -1,14 +1,14 @@
 
 function love.directorydropped(path)
-    Objects.call_on_all("on_directory_dropped", { path })
+    Objects.call_on_all("on_directory_drop", { path })
 end
 
 function love.displayrotated(index, orientation)
-    Objects.call_on_all("on_display_rotated", { index, orientation })
+    Objects.call_on_all("on_display_rotate", { index, orientation })
 end
 
 function love.filedropped(file)
-    Objects.call_on_all("on_file_dropped", { file })
+    Objects.call_on_all("on_file_drop", { file })
 end
 
 function love.focus(is_focused)
