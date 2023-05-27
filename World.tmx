@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+ <editorsettings>
+  <export target="World.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" source="Path.tsx"/>
+ <tileset firstgid="56" source="Walls.tsx"/>
+ <layer id="1" name="Paths" width="10" height="10">
+  <data encoding="csv">
+13,13,17,24,18,13,13,13,13,13,
+13,17,25,0,12,13,13,13,13,13,
+13,14,0,0,23,18,13,13,13,13,
+13,28,2,3,0,23,24,24,18,13,
+13,13,13,28,3,0,0,0,23,18,
+17,24,18,17,25,0,0,0,0,12,
+25,0,12,14,0,0,0,0,0,12,
+0,0,12,14,0,0,4,0,1,29,
+2,2,29,28,2,2,31,2,29,13,
+13,13,13,13,13,13,13,13,13,13
+</data>
+ </layer>
+ <layer id="3" name="Walls" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,56,57,57,58,0,
+0,0,0,0,0,78,73,68,69,0,
+0,0,0,0,0,0,78,79,80,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
