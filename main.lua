@@ -6,7 +6,7 @@ Objects.create_type("pauser", {
     pause_mode = "never",
 
     on_quit_timeout = function(self)
-        if love.keyboard.isDown("escape") then
+        if love.keyboard.isDown("escape") and Objects.are_paused then
             love.window.close()
         end
     end,
@@ -51,10 +51,32 @@ Objects.create_type("player", {
 
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
-
-        Game.camera_x = self.x
-        Game.camera_y = self.y
     end
+})
+
+Objects.create_type("camera", {
+    wx = 0,
+    wy = 0,
+
+    sx = 0,
+    sy = 0,
+
+    player = nil,
+
+    on_create = function(self)
+        self.player = Objects.grab_object("player")
+    end,
+    on_update = function(self, dt)
+        local mx, my = love.mouse.getPosition()
+        mx = mx - self.player.x
+        my = my - self.player.y
+
+        self.wx = mx * 0.06
+        self.wy = my * 0.06
+
+        Game.camera_x = self.player.x + self.wx
+        Game.camera_y = self.player.y + self.wy
+    end,
 })
 
 function love.load()
@@ -63,4 +85,5 @@ function love.load()
     Tilemap.new("World")
 
     Objects.create_object("pauser")
+    Objects.create_object("camera")
 end

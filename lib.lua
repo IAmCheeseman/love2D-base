@@ -115,8 +115,8 @@ function love.draw()
     love.graphics.clear(117 / 255, 167 / 255, 67 / 255)
 
     love.graphics.translate(
-        math.floor(-module.camera_x + sw / 2), 
-        math.floor(-module.camera_y + sh / 2))
+        -module.camera_x + sw / 2, 
+        -module.camera_y + sh / 2)
 
     Tilemap.draw_all()
     Objects.draw_objects()
