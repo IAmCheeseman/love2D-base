@@ -22,7 +22,7 @@ local function draw_sprite(self, x, y)
         x, y,
         self.rotation,
         self.scale_x, self.scale_y,
-        self.offset_x + (frame_size / 2), self.offset_y + (h / 2))
+        self.offset_x + frame_size / 2, self.offset_y + h / 2)
 end
 
 --- Makes a new sprite
