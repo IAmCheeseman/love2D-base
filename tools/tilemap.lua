@@ -1,4 +1,6 @@
-local module = {}
+local module = {
+    current = nil,
+}
 local tilemaps = {}
 
 --- Returns a layer from a tilemap
@@ -39,27 +41,32 @@ local function add_objects(layer)
     end
 end
 
+local function initialize(self)
+    module.current = self
+
+    for i = #self.layers, 1, -1 do
+        local layer = self.layers[i]
+        if layer.type == "objectgroup" then
+            add_objects(layer)
+        elseif layer.type == "imagelayer" then
+            if layer.name == "Background" then
+                self.background_image = love.graphics.newImage(layer.image)
+                self.background_image:setWrap("repeat")
+            end
+        elseif layer.type == "tilelayer" then
+            self.tileset_count = self.tileset_count + 1
+        end
+    end
+end
+
 --- Create a new tilemap
 ---@param path string
 function module.new(path)
     local tilemap = require(path)
     tilemap.is_cell_filled = is_cell_filled
     tilemap.get_layer = get_layer
-    
-    for i = #tilemap.layers, 1, -1 do
-        local layer = tilemap.layers[i]
-        if layer.type == "objectgroup" then
-            add_objects(layer)
-            table.remove(tilemap.layers, i)
-        end
-        if layer.type == "imagelayer" then
-            if layer.name == "Background" then
-                tilemap.background_image = love.graphics.newImage(layer.image)
-                tilemap.background_image:setWrap("repeat")
-            end
-            table.remove(tilemap.layers, i)
-        end
-    end
+    tilemap.initialize = initialize
+    tilemap.tileset_count = 0
 
     table.insert(tilemaps, tilemap)
 
@@ -67,30 +74,32 @@ function module.new(path)
 end
 
 function module.draw_all()
-    for _, tilemap in ipairs(tilemaps) do
-        if tilemap.background_image then
-            local quad = love.graphics.newQuad(
-                0, 0, 
-                tilemap.width * tilemap.tilewidth,
-                tilemap.height * tilemap.tileheight,
-                tilemap.background_image:getWidth(),
-                tilemap.background_image:getHeight())
-            love.graphics.draw(
-                tilemap.background_image,
-                quad,
-                0, 0)
-        end
+    local tilemap = module.current
+    
+    if tilemap.background_image then
+        local quad = love.graphics.newQuad(
+            0, 0, 
+            tilemap.width * tilemap.tilewidth,
+            tilemap.height * tilemap.tileheight,
+            tilemap.background_image:getWidth(),
+            tilemap.background_image:getHeight())
+        love.graphics.draw(
+            tilemap.background_image,
+            quad,
+            0, 0)
+    end
 
-
-        for layer_index, layer in ipairs(tilemap.layers) do
+    local layer_index = 1
+    for _, layer in ipairs(tilemap.layers) do
+        if layer.type == "tilelayer" then
+            layer_index = layer_index + 1
             local tileset = Tileset.get_tileset(layer.name)
             for i, cell in ipairs(layer.data) do
                 if cell ~= 0 then
                     local x = (i - 1) % layer.width
                     local y = math.floor((i - 1) / layer.width)
                     local tile_count = tileset.width * tileset.height
-                    local index = cell - (layer_index - 1) * tile_count
-                    tileset:draw_tile(index, x, y) 
+                    Tileset.draw_tile(cell, x, y) 
                 end
             end
         end

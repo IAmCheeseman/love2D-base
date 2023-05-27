@@ -2,7 +2,18 @@ Game = require "lib"
 
 love.graphics.setDefaultFilter("nearest", "nearest")
 
+Tileset.new("Paths", "paths.png", 16)
+Tileset.new("Walls", "walls.png", 16)
+
+local world = Tilemap.new("World")
+local world2 = Tilemap.new("World2")
+
+local room = Room.new(world)
+local room2 = Room.new(world2)
+
 Objects.create_type("pauser", {
+    persistent = true,
+
     pause_mode = "never",
 
     on_quit_timeout = function(self)
@@ -68,19 +79,25 @@ Objects.create_type("player", {
 
         local move_x = self.x + self.vel_x * dt
         local move_y = self.y + self.vel_y * dt
-        if not world:is_cell_filled("Walls", move_x, self.y) then
+        if not Room.current.tilemap:is_cell_filled("Walls", move_x, self.y) then
             self.x = move_x
         end
-        if not world:is_cell_filled("Walls", self.x, move_y) then
+        if not Room.current.tilemap:is_cell_filled("Walls", self.x, move_y) then
             self.y = move_y
         end
     end,
     on_mouse_press = function(self, x, y, button, is_touch, presses)
-        Objects.create_object_at("ball", x, y)
+        local next_room = room
+        if Room.current == room then
+            next_room = room2
+        end
+        Room.change_to(next_room)
     end
 })
 
 Objects.create_type("camera", {
+    persistent = true,
+
     wx = 0,
     wy = 0,
 
@@ -103,9 +120,7 @@ Objects.create_type("camera", {
 })
 
 function love.load()
-    Tileset.new("Paths", "paths.png", 16)
-    Tileset.new("Walls", "walls.png", 16)
-    world = Tilemap.new("World")
+    Room.change_to(room)    
 
     Objects.create_object("camera")
     Objects.create_object("pauser")

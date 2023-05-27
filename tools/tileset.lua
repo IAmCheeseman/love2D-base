@@ -1,5 +1,6 @@
 local module = {}
 local tilesets = {}
+local tiles = {}
 
 local function index_to_position(self, index)
     local w = self.width
@@ -10,23 +11,18 @@ local function index_to_position(self, index)
     return x * self.cell_size, y * self.cell_size
 end
 
-local function draw_tile(self, index, x, y)
-    local cell_size = self.cell_size
+function module.draw_tile(index, x, y)
+    local tile = tiles[index]
+    local cell_size = tile.tileset.cell_size
     local draw_x = x * cell_size
     local draw_y = y * cell_size
 
-    local atlas_x, atlas_y = self:index_to_position(index)
-    local quad = love.graphics.newQuad(
-        atlas_x, atlas_y,
-        cell_size, cell_size,
-        self.texture:getDimensions())
-
     love.graphics.draw(
-        self.texture,
-        quad,
+        tile.tileset.texture,
+        tile.quad,
         draw_x, draw_y,
         0,
-        self.scale, self.scale)
+        tile.tileset.scale, tile.tileset.scale)
 end
 
 --- Gets the tileset with the specified name
@@ -49,6 +45,19 @@ function module.new(name, texture_path, cell_size)
         height = texture:getHeight() / cell_size,
         draw_tile = draw_tile,
     }
+
+    for y = 0, tileset.height - 1 do
+        for x = 0, tileset.width - 1 do
+            table.insert(tiles, {
+                tileset = tileset,
+                quad = love.graphics.newQuad(
+                    x * cell_size, y * cell_size,
+                    cell_size, cell_size,
+                    texture:getWidth(), texture:getHeight()
+                )
+            })
+        end
+    end
 
     tilesets[name] = tileset
 

@@ -1,4 +1,5 @@
 Objects = require "objects.object"
+Room = require "objects.room"
 Sprite = require "objects.sprite"
 Tileset = require "tools.tileset"
 Tilemap = require "tools.tilemap"

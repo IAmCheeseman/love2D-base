@@ -168,7 +168,7 @@ function module.create_object_at(object_type, x, y)
 end
 
 --- Destroys an object
----@param object the object
+---@param object table the object
 function module.destroy_object(object)
     for i, v in ipairs(objects) do
         if v == object then
@@ -177,6 +177,16 @@ function module.destroy_object(object)
         end
     end
     return false
+end
+
+--- Clears all objects that are not persistent
+function module.clear()
+    for i = #objects, 1, -1 do
+        local object = objects[i]
+        if not object.persistent then
+            table.remove(objects, i)
+        end
+    end
 end
 
 --- Grabs the first object it sees of the specified type
