@@ -29,10 +29,16 @@ local function draw_tile(self, index, x, y)
         self.scale, self.scale)
 end
 
+--- Gets the tileset with the specified name
+---@param name string
 function module.get_tileset(name)
     return tilesets[name]
 end
 
+--- Create a new tileset
+---@param name string
+---@param texture_path string
+---@param cell_size integer
 function module.new(name, texture_path, cell_size)
     local texture = love.graphics.newImage(texture_path)
     local tileset = {

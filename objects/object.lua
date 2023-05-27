@@ -51,6 +51,8 @@ function module.process_objects(dt)
     end
 end
 
+--- What gets called if there is no draw function defined
+---@param self table
 function module.default_draw(self)
     if self.sprite == nil then
         return
@@ -66,10 +68,12 @@ function module.draw_objects()
     end
 end
 
-function module.call_on_all(function_name, values)
+--- Calls a function on every object that defines it
+---@param function_name string
+function module.call_on_all(function_name, ...)
     for _, object in ipairs(objects) do
         if object[function_name] ~= nil and not is_object_paused(object) then
-            object[function_name](object, unpack(values))
+            object[function_name](object, ...)
         end
     end
 end
@@ -81,6 +85,9 @@ local function set_property_default(object, property, value)
     object[property] = value
 end
 
+--- Create an object type
+---@param name string
+---@param object function
 function module.create_type(name, object)
     if object_types[name] ~= nil then
         error("Object with the name of '" .. name .. "' already exists.")
@@ -101,10 +108,17 @@ function module.create_type(name, object)
     object_types[name] = object
 end
 
-local function call_from_base(self, name, args)
-    object_types[self.inherits_from][name](unpack(args))
+--- Calls a function from the base type
+---@param self table
+---@param name string
+local function call_from_base(self, name, ...)
+    object_types[self.inherits_from][name](...)
 end
 
+--- Creates a new type that inherits from another type
+---@param name string
+---@param inherited string
+---@param object table
 function module.create_type_from(name, inherited, object)
     if object_types[name] ~= nil then
         error("Object with the name of '" .. name .. "' already exists.")
@@ -125,6 +139,9 @@ function module.create_type_from(name, inherited, object)
     object_types[name] = derived
 end
 
+--- Creates an object
+---@param object_type string
+---@return table
 function module.create_object(object_type)
     if object_types[object_type] == nil then
         error("Object of type `" .. object_type .. "` doesn't exist.")
@@ -138,6 +155,11 @@ function module.create_object(object_type)
     return object
 end
 
+--- Creates an object at the specified coordinates
+---@param object_type string
+---@param x number
+---@param y number
+---@return table
 function module.create_object_at(object_type, x, y)
     local object = module.create_object(object_type)
     object.x = x
@@ -145,6 +167,8 @@ function module.create_object_at(object_type, x, y)
     return object
 end
 
+--- Destroys an object
+---@param object the object
 function module.destroy_object(object)
     for i, v in ipairs(objects) do
         if v == object then
@@ -155,6 +179,8 @@ function module.destroy_object(object)
     return false
 end
 
+--- Grabs the first object it sees of the specified type
+---@param object_type string
 function module.grab_object(object_type)
     for _, object in ipairs(objects) do
         if object.type == object_type then
@@ -164,6 +190,9 @@ function module.grab_object(object_type)
     return nil
 end
 
+--- Run a function on every object of a specified type
+---@param object_type string
+---@param func function
 function module.with(object_type, func)
     for _, object in ipairs(objects) do
         if object.type == object_type then

@@ -1,6 +1,10 @@
 
 local module = {}
 
+--- Draws a sprite
+---@param self table
+---@param x number x axis
+---@param y number y axis
 local function draw_sprite(self, x, y)
     if self.frame > self.frame_count or self.frame <= 0 then
         error("in object '" .. self.type .. "', frame index " .. self.frame .. " is invalid. (" .. self.frame_count .. " frames)")
@@ -16,13 +20,16 @@ local function draw_sprite(self, x, y)
         frame_size, h,
         w, h)
 
+    local center_x = (frame_size / 2) * self.scale_x
+    local center_y = (h / 2) * self.scale_y
+
     love.graphics.draw(
         self.texture,
         quad,
-        x, y,
+        x - center_x, y - center_y,
         self.rotation,
         self.scale_x, self.scale_y,
-        self.offset_x + frame_size / 2, self.offset_y + h / 2)
+        self.offset_x, self.offset_y)
 end
 
 --- Makes a new sprite
@@ -54,6 +61,9 @@ function module.new(path, frame_count, fps)
     }
 end
 
+--- Processes a sprite
+---@param sprite table
+---@param dt number
 function module.process(sprite, dt)
     sprite._time = sprite._time + dt
 

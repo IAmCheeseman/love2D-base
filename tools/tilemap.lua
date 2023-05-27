@@ -1,6 +1,9 @@
 local module = {}
 local tilemaps = {}
 
+--- Returns a layer from a tilemap
+---@param tilemap table
+---@param layer_name string
 local function get_layer(tilemap, layer_name)
     for _, layer in ipairs(tilemap.layers) do
         if layer.name == layer_name then
@@ -10,6 +13,11 @@ local function get_layer(tilemap, layer_name)
     return nil
 end
 
+--- Checks if the tile at x and y is filled, x and y are in global coordinates
+---@param tilemap table
+---@param layer_name string
+---@param x number
+---@param y number
 local function is_cell_filled(tilemap, layer_name, x, y)
     local layer = tilemap:get_layer(layer_name)
     local tileset = Tileset.get_tileset(layer_name)
@@ -27,6 +35,8 @@ local function add_objects(layer)
     end
 end
 
+--- Create a new tilemap
+---@param path string
 function module.new(path)
     local tilemap = require(path)
     tilemap.is_cell_filled = is_cell_filled

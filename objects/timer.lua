@@ -1,5 +1,8 @@
 local module = {}
 
+--- Starts a timer
+---@param self table
+---@param time number? Default is what was last set
 local function timer_start(self, time)
     time = time or self.total_time
 
@@ -8,6 +11,11 @@ local function timer_start(self, time)
     self.is_over = false
 end
 
+--- Create a timer
+---@param self table
+---@param name string
+---@param func function Called when the timer ends
+---@param time number
 function module.create_timer(self, name, func, time)
     time = time or 1
 
@@ -20,6 +28,9 @@ function module.create_timer(self, name, func, time)
     }
 end
 
+--- Processes an object's timers
+---@param object table
+---@param dt number
 function module.process(object, dt)
     for _, timer in pairs(object.timers) do
         timer.time = timer.time - dt
