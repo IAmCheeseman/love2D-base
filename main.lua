@@ -70,7 +70,6 @@ Objects.create_type("player", {
     end,
     on_mouse_press = function(self, x, y, button, is_touch, presses)
         local mx, my = love.mouse.getPosition()
-        print(mx, my)
         Objects.create_object_at("ball", mx, my)
     end
 })

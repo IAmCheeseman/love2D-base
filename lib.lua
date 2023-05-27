@@ -12,6 +12,14 @@ local module = {
     camera_y = 0,
 }
 
+local loveMouseGetPosition = love.mouse.getPosition
+
+function love.mouse.getPosition()
+    local mx, my = loveMouseGetPosition()
+    mx = module.camera_x + mx / settings.scale
+    my = module.camera_y + my / settings.scale
+    return mx - settings.screen_width / 2, my - settings.screen_height / 2
+end
 
 function love.directorydropped(path)
     Objects.call_on_all("on_directory_drop", { path })
@@ -84,32 +92,6 @@ local sw, sh = settings.screen_width, settings.screen_height
 local canvas = love.graphics.newCanvas(sw, sh)
 canvas:setFilter("nearest", "nearest")
 
-local function get_draw_transform()
-    local ww, wh, _ = love.window.getMode()
-
-    local w = ww + sw
-    local h = wh + sh
-
-    while w > ww do
-        w = w - sw
-    end
-    while h > wh do
-        h = h - sh
-    end
-
-    local scale = 0
-    if w / sw < h / sh then
-        scale = w / sw
-    else
-        scale = h / sh
-    end
-
-    local cw = sw * scale
-    local ch = sh * scale
-
-    return (ww - cw) / 2, (wh - ch) / 2, 0, scale, scale
-end
-
 function love.draw()
     love.graphics.setCanvas(canvas)
     love.graphics.clear(117 / 255, 167 / 255, 67 / 255)
@@ -126,7 +108,7 @@ function love.draw()
     love.graphics.translate(
         module.camera_x - sw / 2, 
         module.camera_y - sh / 2)
-    love.graphics.draw(canvas, get_draw_transform())
+    love.graphics.draw(canvas, 0, 0, 0, settings.scale, settings.scale)
 end
 
 return module
