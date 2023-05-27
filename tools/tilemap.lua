@@ -31,7 +31,7 @@ end
 local function add_objects(layer)
     for _, object_data in ipairs(layer.objects) do
         local object = Objects.create_object_at(
-            object_data.name, 
+            object_data.type, 
             object_data.x, object_data.y)
         for name, value in pairs(object_data.properties) do
             object[name] = value

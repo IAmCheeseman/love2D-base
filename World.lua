@@ -282,7 +282,7 @@ return {
         {
           id = 1,
           name = "player",
-          type = "",
+          type = "player",
           shape = "point",
           x = 437,
           y = 386,
