@@ -33,14 +33,14 @@ function module.angle_to(x, y, xx, yy)
 end
 
 function module.get_input_direction(up, left, down, right)
-    local ix, iy = 0, 0
+    local input_x, input_y = 0, 0
 
-    if love.keyboard.isDown(up) then iy = iy - 1 end
-    if love.keyboard.isDown(left) then ix = ix - 1 end
-    if love.keyboard.isDown(down) then iy = iy + 1 end
-    if love.keyboard.isDown(right) then ix = ix + 1 end
+    if love.keyboard.isDown(up) then input_y = input_y - 1 end
+    if love.keyboard.isDown(left) then input_x = input_x - 1 end
+    if love.keyboard.isDown(down) then input_y = input_y + 1 end
+    if love.keyboard.isDown(right) then input_x = input_x + 1 end
 
-    return ix, iy
+    return input_x, input_y
 end
 
 function module.rotated(x, y, r)

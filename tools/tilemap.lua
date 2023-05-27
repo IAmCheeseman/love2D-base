@@ -14,8 +14,8 @@ local function is_cell_filled(tilemap, layer_name, x, y)
     local layer = tilemap:get_layer(layer_name)
     local tileset = Tileset.get_tileset(layer_name)
 
-    local lx, ly = math.floor(x / tileset.cell_size), math.floor(y / tileset.cell_size)
-    local index = ly * layer.height + lx
+    local layer_x, layer_y = math.floor(x / tileset.cell_size), math.floor(y / tileset.cell_size)
+    local index = layer_y * layer.height + layer_x
     return layer.data[index] ~= 0
 end
 

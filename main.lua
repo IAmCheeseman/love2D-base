@@ -46,32 +46,32 @@ Objects.create_type("player", {
     x = 50,
     y = 150,
 
-    vx = 0,
-    vy = 0,
+    vel_x = 0,
+    vel_y = 0,
 
     on_create = function(self)
         Objects.grab_object("camera").tracked = self
     end,
     on_update = function(self, dt)
-        local ix, iy = Vector.get_input_direction("w", "a", "s", "d")
+        local input_x, input_y = Vector.get_input_direction("w", "a", "s", "d")
 
-        ix, iy = Vector.normalized(ix, iy)
+        input_x, input_y = Vector.normalized(input_x, input_y)
 
         local accel_delta = self.accel
-        if Vector.dot(self.vx, self.vy, ix, iy) < 0.5 then
+        if Vector.dot(self.vel_x, self.vel_y, input_x, input_y) < 0.5 then
             accel_delta = self.frict
         end
 
-        self.vx = math.lerp(self.vx, ix * self.speed, accel_delta * dt)
-        self.vy = math.lerp(self.vy, iy * self.speed, accel_delta * dt)
+        self.vel_x = math.lerp(self.vel_x, input_x * self.speed, accel_delta * dt)
+        self.vel_y = math.lerp(self.vel_y, input_y * self.speed, accel_delta * dt)
 
-        local mx = self.x + self.vx * dt
-        local my = self.y + self.vy * dt
-        if not world:is_cell_filled("Walls", mx, self.y) then
-            self.x = mx
+        local move_x = self.x + self.vel_x * dt
+        local move_y = self.y + self.vel_y * dt
+        if not world:is_cell_filled("Walls", move_x, self.y) then
+            self.x = move_x
         end
-        if not world:is_cell_filled("Walls", self.x, my) then
-            self.y = my
+        if not world:is_cell_filled("Walls", self.x, move_y) then
+            self.y = move_y
         end
     end,
     on_mouse_press = function(self, x, y, button, is_touch, presses)

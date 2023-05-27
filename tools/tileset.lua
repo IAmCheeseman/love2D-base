@@ -12,19 +12,19 @@ end
 
 local function draw_tile(self, index, x, y)
     local cell_size = self.cell_size
-    local dx = x * cell_size
-    local dy = y * cell_size
+    local draw_x = x * cell_size
+    local draw_y = y * cell_size
 
-    local qx, qy = self:index_to_position(index)
+    local atlas_x, atlas_y = self:index_to_position(index)
     local quad = love.graphics.newQuad(
-        qx, qy,
+        atlas_x, atlas_y,
         cell_size, cell_size,
         self.texture:getDimensions())
 
     love.graphics.draw(
         self.texture,
         quad,
-        dx, dy,
+        draw_x, draw_y,
         0,
         self.scale, self.scale)
 end
