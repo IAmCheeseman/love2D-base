@@ -1,6 +1,24 @@
 local module = {}
 local tilemaps = {}
 
+local function get_layer(tilemap, layer_name)
+    for _, layer in ipairs(tilemap.layers) do
+        if layer.name == layer_name then
+            return layer
+        end
+    end
+    return nil
+end
+
+local function is_cell_filled(tilemap, layer_name, x, y)
+    local layer = tilemap:get_layer(layer_name)
+    local tileset = Tileset.get_tileset(layer_name)
+
+    local lx, ly = math.floor(x / tileset.cell_size), math.floor(y / tileset.cell_size)
+    local index = ly * layer.height + lx
+    return layer.data[index] ~= 0
+end
+
 local function add_objects(layer)
     for _, object in ipairs(layer.objects) do
         Objects.create_object_at(
@@ -11,6 +29,8 @@ end
 
 function module.new(path)
     local tilemap = require(path)
+    tilemap.is_cell_filled = is_cell_filled
+    tilemap.get_layer = get_layer
     
     for i = #tilemap.layers, 1, -1 do
         local layer = tilemap.layers[i]

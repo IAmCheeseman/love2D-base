@@ -65,8 +65,14 @@ Objects.create_type("player", {
         self.vx = math.lerp(self.vx, ix * self.speed, accel_delta * dt)
         self.vy = math.lerp(self.vy, iy * self.speed, accel_delta * dt)
 
-        self.x = self.x + self.vx * dt
-        self.y = self.y + self.vy * dt
+        local mx = self.x + self.vx * dt
+        local my = self.y + self.vy * dt
+        if not world:is_cell_filled("Walls", mx, self.y) then
+            self.x = mx
+        end
+        if not world:is_cell_filled("Walls", self.x, my) then
+            self.y = my
+        end
     end,
     on_mouse_press = function(self, x, y, button, is_touch, presses)
         local mx, my = love.mouse.getPosition()
@@ -99,7 +105,7 @@ Objects.create_type("camera", {
 function love.load()
     Tileset.new("Paths", "paths.png", 16)
     Tileset.new("Walls", "walls.png", 16)
-    Tilemap.new("World")
+    world = Tilemap.new("World")
 
     Objects.create_object("camera")
     Objects.create_object("pauser")
