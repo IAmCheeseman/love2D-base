@@ -32,7 +32,8 @@ Objects.create_type("ball", {
         self.timers.lifetime:start()
     end,
     on_draw = function(self)
-        love.graphics.circle("fill", self.x, self.y, 16)
+        local percentage = self.timers.lifetime.time / self.timers.lifetime.total_time
+        love.graphics.circle("fill", self.x, self.y, 16 * percentage)
     end
 })
 
@@ -75,8 +76,7 @@ Objects.create_type("player", {
         end
     end,
     on_mouse_press = function(self, x, y, button, is_touch, presses)
-        local mx, my = love.mouse.getPosition()
-        Objects.create_object_at("ball", mx, my)
+        Objects.create_object_at("ball", x, y)
     end
 })
 
