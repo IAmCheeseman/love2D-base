@@ -88,8 +88,8 @@ Objects.create_type_from("balling_player", "player", {
 })
 
 function love.load()
-    Tilemap.new_tileset("Paths", "paths.png", 16)
-    Tilemap.new_tileset("Walls", "walls.png", 16)
+    Tileset.new("Paths", "paths.png", 16)
+    Tileset.new("Walls", "walls.png", 16)
     Tilemap.new("World")
 
     Objects.create_object("balling_player")
