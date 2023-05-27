@@ -52,6 +52,13 @@ function module.new(path)
             add_objects(layer)
             table.remove(tilemap.layers, i)
         end
+        if layer.type == "imagelayer" then
+            if layer.name == "Background" then
+                tilemap.background_image = love.graphics.newImage(layer.image)
+                tilemap.background_image:setWrap("repeat")
+            end
+            table.remove(tilemap.layers, i)
+        end
     end
 
     table.insert(tilemaps, tilemap)
@@ -61,6 +68,20 @@ end
 
 function module.draw_all()
     for _, tilemap in ipairs(tilemaps) do
+        if tilemap.background_image then
+            local quad = love.graphics.newQuad(
+                0, 0, 
+                tilemap.width * tilemap.tilewidth,
+                tilemap.height * tilemap.tileheight,
+                tilemap.background_image:getWidth(),
+                tilemap.background_image:getHeight())
+            love.graphics.draw(
+                tilemap.background_image,
+                quad,
+                0, 0)
+        end
+
+
         for layer_index, layer in ipairs(tilemap.layers) do
             local tileset = Tileset.get_tileset(layer.name)
             for i, cell in ipairs(layer.data) do

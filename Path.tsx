@@ -2,7 +2,7 @@
 <tileset version="1.10" tiledversion="1.10.1" name="Path" tilewidth="16" tileheight="16" tilecount="55" columns="11">
  <image source="paths.png" width="176" height="80"/>
  <wangsets>
-  <wangset name="Paths" type="mixed" tile="-1">
+  <wangset name="Paths" type="mixed" tile="36">
    <wangcolor name="Tiles" color="#ff0000" tile="-1" probability="1"/>
    <wangtile tileid="0" wangid="0,0,1,1,1,0,0,0"/>
    <wangtile tileid="1" wangid="0,0,1,1,1,1,1,0"/>
@@ -45,6 +45,10 @@
    <wangtile tileid="41" wangid="1,0,1,0,0,0,1,0"/>
    <wangtile tileid="42" wangid="1,1,1,0,1,0,1,0"/>
    <wangtile tileid="43" wangid="1,0,1,0,1,0,1,1"/>
+   <wangtile tileid="44" wangid="1,1,1,1,1,1,1,1"/>
+   <wangtile tileid="45" wangid="1,1,1,1,1,1,1,1"/>
+   <wangtile tileid="46" wangid="1,1,1,1,1,1,1,1"/>
+   <wangtile tileid="47" wangid="1,1,1,1,1,1,1,1"/>
    <wangtile tileid="48" wangid="1,0,1,0,1,0,0,0"/>
    <wangtile tileid="49" wangid="1,0,1,0,1,1,1,1"/>
    <wangtile tileid="50" wangid="1,1,1,1,1,0,1,0"/>

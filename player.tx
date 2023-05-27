@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<template>
- <object name="player" type="player">
-  <properties>
-   <property name="speed" type="float" value="500"/>
-  </properties>
-  <point/>
- </object>
-</template>

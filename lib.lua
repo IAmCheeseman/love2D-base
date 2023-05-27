@@ -97,7 +97,7 @@ canvas:setFilter("nearest", "nearest")
 
 function love.draw()
     love.graphics.setCanvas(canvas)
-    love.graphics.clear(117 / 255, 167 / 255, 67 / 255)
+    love.graphics.clear(0.2, 0.2, 0.2)
 
     love.graphics.translate(
         -module.camera_x + sw / 2, 
