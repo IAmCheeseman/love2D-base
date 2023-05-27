@@ -2,8 +2,8 @@ Objects = require "objects.object"
 Sprite = require "objects.sprite"
 Tileset = require "tools.tileset"
 Tilemap = require "tools.tilemap"
-Vector = require "vector"
-require "mathfunctions"
+Vector = require "tools.vector"
+require "tools.mathfunctions"
 
 local settings = require "settings"
 
