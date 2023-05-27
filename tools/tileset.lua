@@ -1,4 +1,4 @@
-local tileset = {}
+local module = {}
 local tilesets = {}
 
 local function index_to_position(self, index)
@@ -10,12 +10,12 @@ local function index_to_position(self, index)
     return x * self.cell_size, y * self.cell_size
 end
 
-local function draw_tile(self, i, x, y)
+local function draw_tile(self, index, x, y)
     local cell_size = self.cell_size
     local dx = x * cell_size
     local dy = y * cell_size
 
-    local qx, qy = self:index_to_position(i)
+    local qx, qy = self:index_to_position(index)
     local quad = love.graphics.newQuad(
         qx, qy,
         cell_size, cell_size,
@@ -29,13 +29,13 @@ local function draw_tile(self, i, x, y)
         self.scale, self.scale)
 end
 
-function tileset.get_tileset(name)
+function module.get_tileset(name)
     return tilesets[name]
 end
 
-function tileset.new(name, texture_path, cell_size)
+function module.new(name, texture_path, cell_size)
     local texture = love.graphics.newImage(texture_path)
-    local ts = {
+    local tileset = {
         texture = texture,
         index_to_position = index_to_position,
         cell_size = cell_size,
@@ -44,9 +44,9 @@ function tileset.new(name, texture_path, cell_size)
         draw_tile = draw_tile,
     }
 
-    tilesets[name] = ts
+    tilesets[name] = tileset
 
-    return ts
+    return tileset
 end
 
-return tileset
+return module

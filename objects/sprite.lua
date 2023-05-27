@@ -1,8 +1,5 @@
 
-local sprites = {
-    default_sprite_x = 1,
-    default_sprite_y = 1,
-}
+local module = {}
 
 local function draw_sprite(self, x, y)
     if self.frame > self.frame_count or self.frame <= 0 then
@@ -33,7 +30,7 @@ end
 ---@param frame_count integer? Default is 1
 ---@param fps number? Default is 10
 ---@return table
-function sprites.new(path, frame_count, fps)
+function module.new(path, frame_count, fps)
     frame_count = frame_count or 1
     fps = fps or 10
 
@@ -41,8 +38,8 @@ function sprites.new(path, frame_count, fps)
         path = path,
         texture = love.graphics.newImage(path),
         rotation = 0,
-        scale_x = sprites.default_sprite_x,
-        scale_y = sprites.default_sprite_y,
+        scale_x = 1,
+        scale_y = 1,
         offset_x = 0,
         offset_y = 0,
         frame_count = frame_count,
@@ -57,7 +54,7 @@ function sprites.new(path, frame_count, fps)
     }
 end
 
-function sprites.process(sprite, dt)
+function module.process(sprite, dt)
     sprite._time = sprite._time + dt
 
     if sprite._time > 1 / sprite.fps then
@@ -66,4 +63,4 @@ function sprites.process(sprite, dt)
     end
 end
 
-return sprites
+return module

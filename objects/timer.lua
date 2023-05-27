@@ -1,4 +1,4 @@
-local timers = {}
+local module = {}
 
 local function timer_start(self, time)
     time = time or self.total_time
@@ -8,7 +8,7 @@ local function timer_start(self, time)
     self.is_over = false
 end
 
-function timers.create_timer(self, name, func, time)
+function module.create_timer(self, name, func, time)
     time = time or 1
 
     self.timers[name] = {
@@ -20,7 +20,7 @@ function timers.create_timer(self, name, func, time)
     }
 end
 
-function timers.process(object, dt)
+function module.process(object, dt)
     for _, timer in pairs(object.timers) do
         timer.time = timer.time - dt
 
@@ -33,4 +33,4 @@ function timers.process(object, dt)
     end
 end
 
-return timers
+return module
