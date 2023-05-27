@@ -23,6 +23,19 @@ Objects.create_type("pauser", {
     end
 })
 
+Objects.create_type("ball", {
+    on_lifetime_timeout = function(self)
+        Objects.destroy_object(self)
+    end,
+    on_create = function(self)
+        self:create_timer("lifetime", self.on_lifetime_timeout, 1)
+        self.timers.lifetime:start()
+    end,
+    on_draw = function(self)
+        love.graphics.circle("fill", self.x, self.y, 16)
+    end
+})
+
 Objects.create_type("player", {
     sprite = Sprite.new("doomguy.png", 2, 6),
 
@@ -54,6 +67,11 @@ Objects.create_type("player", {
 
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
+    end,
+    on_mouse_press = function(self, x, y, button, is_touch, presses)
+        local mx, my = love.mouse.getPosition()
+        print(mx, my)
+        Objects.create_object_at("ball", mx, my)
     end
 })
 
@@ -84,6 +102,6 @@ function love.load()
     Tileset.new("Walls", "walls.png", 16)
     Tilemap.new("World")
 
-    Objects.create_object("pauser")
     Objects.create_object("camera")
+    Objects.create_object("pauser")
 end

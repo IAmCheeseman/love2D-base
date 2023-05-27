@@ -146,8 +146,8 @@ function module.create_object_at(object_type, x, y)
 end
 
 function module.destroy_object(object)
-    for i, object in ipairs(objects) do
-        if object == object then
+    for i, v in ipairs(objects) do
+        if v == object then
             table.remove(objects, i)
             return true
         end
