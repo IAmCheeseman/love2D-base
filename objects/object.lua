@@ -7,6 +7,7 @@ local module = {
 
 local objects = {}
 local object_types = {}
+local create_queue = {}
 
 local function deep_copy(t)
     local copy = {}
@@ -36,6 +37,13 @@ function module.process_object(object, dt)
 end
 
 function module.process_objects(dt)
+    for _, object in ipairs(create_queue) do
+        if object.on_create then
+            object:on_create()
+        end
+    end
+    create_queue = {}
+
     for _, object in ipairs(objects) do
         if not is_object_paused(object) then
             module.process_object(object, dt)
@@ -123,11 +131,9 @@ function module.create_object(object_type)
     end
 
     local object = deep_copy(object_types[object_type])
-    table.insert(objects, object)
 
-    if object.on_create then
-        object:on_create()
-    end
+    table.insert(objects, object)
+    table.insert(create_queue, object)
 
     return object
 end

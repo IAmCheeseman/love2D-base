@@ -36,6 +36,9 @@ Objects.create_type("player", {
     vx = 0,
     vy = 0,
 
+    on_create = function(self)
+        Objects.grab_object("camera").tracked = self
+    end,
     on_update = function(self, dt)
         local ix, iy = Vector.get_input_direction("w", "a", "s", "d")
 
@@ -61,21 +64,18 @@ Objects.create_type("camera", {
     sx = 0,
     sy = 0,
 
-    player = nil,
+    tracked = nil,
 
-    on_create = function(self)
-        self.player = Objects.grab_object("player")
-    end,
     on_update = function(self, dt)
         local mx, my = love.mouse.getPosition()
-        mx = mx - self.player.x
-        my = my - self.player.y
+        mx = mx - self.tracked.x
+        my = my - self.tracked.y
 
         self.wx = mx * 0.06
         self.wy = my * 0.06
 
-        Game.camera_x = self.player.x + self.wx
-        Game.camera_y = self.player.y + self.wy
+        Game.camera_x = self.tracked.x + self.wx
+        Game.camera_y = self.tracked.y + self.wy
     end,
 })
 
