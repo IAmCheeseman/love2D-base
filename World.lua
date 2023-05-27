@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 6,
+  nextobjectid = 41,
   properties = {},
   tilesets = {
     {
@@ -284,8 +284,263 @@ return {
           name = "player",
           type = "player",
           shape = "point",
-          x = 437,
-          y = 386,
+          x = 434.333,
+          y = 375.333,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 24,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 499.5,
+          y = 384.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 25,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 444.5,
+          y = 436,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 26,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 514.5,
+          y = 458.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 27,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 540.5,
+          y = 422,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 28,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 531,
+          y = 369.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 29,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 474.5,
+          y = 331,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 30,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 422.5,
+          y = 312,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 31,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 381.5,
+          y = 361.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 32,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 383.5,
+          y = 396.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 33,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 382.5,
+          y = 436.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 34,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 342,
+          y = 406,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 35,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 341.5,
+          y = 350,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 36,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 363,
+          y = 317,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 37,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 382,
+          y = 298,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 38,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 415.5,
+          y = 336,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 39,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 459.5,
+          y = 284.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["speed"] = 500
+          }
+        },
+        {
+          id = 40,
+          name = "player",
+          type = "",
+          shape = "point",
+          x = 507,
+          y = 308.5,
           width = 0,
           height = 0,
           rotation = 0,
