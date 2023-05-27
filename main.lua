@@ -23,21 +23,6 @@ Objects.create_type("pauser", {
     end
 })
 
-Objects.create_type("red_ball", {
-    destroy_timer = function(self)
-        Objects.destroy_object(self)
-    end,
-    on_create = function(self)
-        self:create_timer("destroy", self.destroy_timer, 3)
-        self.timers.destroy:start()
-    end,
-    on_draw = function(self)
-        local percentage = self.timers.destroy.time / self.timers.destroy.total_time
-        love.graphics.setColor(1, 0, 0, percentage)
-        love.graphics.circle("fill", self.x, self.y, 32 * percentage)
-    end
-})
-
 Objects.create_type("player", {
     sprite = Sprite.new("doomguy.png", 2, 6),
 
@@ -69,22 +54,6 @@ Objects.create_type("player", {
 
         Game.camera_x = self.x
         Game.camera_y = self.y
-    end
-})
-
-Objects.create_type_from("balling_player", "player", {
-    on_create = function(self)
-        self:create_timer("ball_cooldown", nil, 0.25)
-    end,
-
-    on_update = function(self, dt)
-        self:call_from_base("on_update", { self, dt })
-
-        if love.keyboard.isDown("space") and self.timers.ball_cooldown.is_over then
-            Objects.create_object_at("red_ball", self.x, self.y)
-            self.timers.ball_cooldown:start()
-            self.can_place_ball = false
-        end
     end
 })
 
