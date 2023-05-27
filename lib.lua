@@ -7,6 +7,11 @@ require "mathfunctions"
 
 local settings = require "settings"
 
+local module = {
+    camera_x = 0,
+    camera_y = 0,
+}
+
 
 function love.directorydropped(path)
     Objects.call_on_all("on_directory_drop", { path })
@@ -107,11 +112,21 @@ end
 
 function love.draw()
     love.graphics.setCanvas(canvas)
-    love.graphics.clear(0.2, 0.2, 0.2)
+    love.graphics.clear(117 / 255, 167 / 255, 67 / 255)
+
+    love.graphics.translate(
+        math.floor(-module.camera_x + sw / 2), 
+        math.floor(-module.camera_y + sh / 2))
 
     Tilemap.draw_all()
     Objects.draw_objects()
     
     love.graphics.setCanvas()
+
+    love.graphics.translate(
+        module.camera_x - sw / 2, 
+        module.camera_y - sh / 2)
     love.graphics.draw(canvas, get_draw_transform())
 end
+
+return module

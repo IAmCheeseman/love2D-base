@@ -1,4 +1,4 @@
-require "lib"
+Game = require "lib"
 
 love.graphics.setDefaultFilter("nearest", "nearest")
 
@@ -15,7 +15,7 @@ Objects.create_type("pauser", {
         self:create_timer("quit", self.on_quit_timeout, 0.5)
     end,
 
-    on_key_pressed = function(self, key, _, is_repeat)
+    on_key_press = function(self, key, _, is_repeat)
         if key == "escape" and not is_repeat then
             Objects.are_paused = not Objects.are_paused
             self.timers.quit:start()
@@ -66,6 +66,9 @@ Objects.create_type("player", {
 
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
+
+        Game.camera_x = self.x
+        Game.camera_y = self.y
     end
 })
 
@@ -90,6 +93,5 @@ function love.load()
     Tileset.new("Walls", "walls.png", 16)
     Tilemap.new("World")
 
-    Objects.create_object("balling_player")
     Objects.create_object("pauser")
 end

@@ -1,9 +1,27 @@
 local tilemap = {}
 local tilemaps = {}
 
+local function add_objects(layer)
+    for _, object in ipairs(layer.objects) do
+        Objects.create_object_at(
+            object.name, 
+            object.x, object.y)
+    end
+end
+
 function tilemap.new(path)
     local tm = require(path)
+    
+    for i = #tm.layers, 1, -1 do
+        local layer = tm.layers[i]
+        if layer.type == "objectgroup" then
+            add_objects(layer)
+            table.remove(tm.layers, i)
+        end
+    end
+
     table.insert(tilemaps, tm)
+
     return tm
 end
 
