@@ -111,10 +111,7 @@ function love.draw()
 
     Tilemap.draw_all()
     Objects.draw_objects()
-
-    love.graphics.setCanvas()
-
     
-
+    love.graphics.setCanvas()
     love.graphics.draw(canvas, get_draw_transform())
 end
