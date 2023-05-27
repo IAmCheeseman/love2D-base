@@ -16,8 +16,7 @@ return {
     {
       name = "Path",
       firstgid = 1,
-      filename = "Path.tsx",
-      exportfilename = "Path.lua"
+      filename = "Path.tsx"
     },
     {
       name = "Walls",
@@ -285,13 +284,15 @@ return {
           name = "player",
           type = "",
           shape = "point",
-          x = 429,
-          y = 346,
+          x = 437,
+          y = 386,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["speed"] = 500
+          }
         }
       }
     }

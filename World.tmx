@@ -214,7 +214,10 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="1" name="player" x="429" y="346">
+  <object id="1" name="player" x="437" y="386">
+   <properties>
+    <property name="speed" type="float" value="500"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
