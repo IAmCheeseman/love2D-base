@@ -5,6 +5,8 @@ Tilemap = require "tools.tilemap"
 Vector = require "vector"
 require "mathfunctions"
 
+local settings = require "settings"
+
 
 function love.directorydropped(path)
     Objects.call_on_all("on_directory_drop", { path })
@@ -73,9 +75,46 @@ function love.update(dt)
     Objects.process_objects(dt)
 end
 
+local sw, sh = settings.screen_width, settings.screen_height
+local canvas = love.graphics.newCanvas(sw, sh)
+canvas:setFilter("nearest", "nearest")
+
+local function get_draw_transform()
+    local ww, wh, _ = love.window.getMode()
+
+    local w = ww + sw
+    local h = wh + sh
+
+    while w > ww do
+        w = w - sw
+    end
+    while h > wh do
+        h = h - sh
+    end
+
+    local scale = 0
+    if w / sw < h / sh then
+        scale = w / sw
+    else
+        scale = h / sh
+    end
+
+    local cw = sw * scale
+    local ch = sh * scale
+
+    return (ww - cw) / 2, (wh - ch) / 2, 0, scale, scale
+end
+
 function love.draw()
-    love.graphics.setBackgroundColor(0.2, 0.2, 0.2)
+    love.graphics.setCanvas(canvas)
+    love.graphics.clear(0.2, 0.2, 0.2)
 
     Tilemap.draw_all()
     Objects.draw_objects()
+
+    love.graphics.setCanvas()
+
+    
+
+    love.graphics.draw(canvas, get_draw_transform())
 end

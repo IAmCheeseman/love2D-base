@@ -1,8 +1,6 @@
 require "lib"
 
 love.graphics.setDefaultFilter("nearest", "nearest")
-Sprite.default_sprite_x = 3
-Sprite.default_sprite_y = 3
 
 Objects.create_type("pauser", {
     pause_mode = "never",
@@ -43,7 +41,7 @@ Objects.create_type("red_ball", {
 Objects.create_type("player", {
     sprite = Sprite.new("doomguy.png", 2, 6),
 
-    speed = 350,
+    speed = 150,
     accel = 10,
     frict = 200,
 

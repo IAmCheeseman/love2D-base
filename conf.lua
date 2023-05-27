@@ -1,3 +1,4 @@
+local settings = require "settings"
 
 function love.conf(t)
     t.identity = nil                    -- The name of the save directory (string)
@@ -13,10 +14,10 @@ function love.conf(t)
 
     t.window.title = "Game"             -- The window title (string)
     t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
-    t.window.width = 320 * 3            -- The window width (number)
-    t.window.height = 180 * 3           -- The window height (number)
+    t.window.width = settings.window_width            -- The window width (number)
+    t.window.height = settings.window_height           -- The window height (number)
     t.window.borderless = false         -- Remove all border visuals from the window (boolean)
-    t.window.resizable = false          -- Let the window be user-resizable (boolean)
+    t.window.resizable = true          -- Let the window be user-resizable (boolean)
     t.window.minwidth = 1               -- Minimum window width if the window is resizable (number)
     t.window.minheight = 1              -- Minimum window height if the window is resizable (number)
     t.window.fullscreen = false         -- Enable fullscreen (boolean)
