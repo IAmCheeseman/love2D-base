@@ -1,3 +1,4 @@
 .vscode/
-*.tiled-session
+test/
 main.lua
+conf.lua
