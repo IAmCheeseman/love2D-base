@@ -32,6 +32,22 @@ local function draw_sprite(self, x, y)
         self.offset_x, self.offset_y)
 end
 
+--- Processes a sprite
+---@param sprite table
+---@param dt number
+function module.process(sprite, dt)
+    sprite._time = sprite._time + dt
+
+    if sprite._time > 1 / sprite.fps then
+        sprite.frame = sprite.frame + 1
+        sprite._time = 0
+    end
+
+    if sprite.frame > sprite.animation_end or sprite.frame < sprite.animation_start then
+        sprite.frame = sprite.animation_start
+    end
+end
+
 --- Makes a new sprite
 ---@param path string
 ---@param frame_count integer? Default is 1
@@ -59,18 +75,6 @@ function module.new(path, frame_count, fps)
 
         draw = draw_sprite,
     }
-end
-
---- Processes a sprite
----@param sprite table
----@param dt number
-function module.process(sprite, dt)
-    sprite._time = sprite._time + dt
-
-    if sprite._time > 1 / sprite.fps then
-        sprite.frame = math.wrap(sprite.frame + 1, sprite.animation_start, sprite.animation_end)
-        sprite._time = 0
-    end
 end
 
 return module
