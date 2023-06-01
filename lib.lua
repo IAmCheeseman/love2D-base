@@ -102,8 +102,8 @@ function love.draw()
     love.graphics.clear(0.2, 0.2, 0.2)
 
     love.graphics.translate(
-        -module.camera_x + sw / 2, 
-        -module.camera_y + sh / 2)
+        math.floor(-module.camera_x + sw / 2), 
+        math.floor(-module.camera_y + sh / 2))
 
     Tilemap.draw_all()
     Objects.draw_objects()
@@ -111,8 +111,8 @@ function love.draw()
     love.graphics.setCanvas()
 
     love.graphics.translate(
-        module.camera_x - sw / 2, 
-        module.camera_y - sh / 2)
+        math.floor(module.camera_x - sw / 2), 
+        math.floor(module.camera_y - sh / 2))
     love.graphics.draw(canvas, 0, 0, 0, settings.scale, settings.scale)
 end
 
