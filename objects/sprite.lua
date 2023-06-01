@@ -26,7 +26,7 @@ local function draw_sprite(self, x, y)
     love.graphics.draw(
         self.texture,
         quad,
-        x - center_x, y - center_y,
+        math.floor(x - center_x), math.floor(y - center_y),
         self.rotation,
         self.scale_x, self.scale_y,
         self.offset_x, self.offset_y)
