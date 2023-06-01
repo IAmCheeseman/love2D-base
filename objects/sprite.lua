@@ -32,6 +32,12 @@ local function draw_sprite(self, x, y)
         self.offset_x, self.offset_y)
 end
 
+local function apply_animation(self, animation)
+    self.animation_start = animation.anim_start
+    self.animation_end = animation.anim_end
+    self.fps = animation.fps
+end
+
 --- Processes a sprite
 ---@param sprite table
 ---@param dt number
@@ -74,6 +80,15 @@ function module.new(path, frame_count, fps)
         _time = 0,
 
         draw = draw_sprite,
+        apply_animation = apply_animation,
+    }
+end
+
+function module.new_animation(anim_start, anim_end, fps)
+    return {
+        anim_start = anim_start,
+        anim_end = anim_end,
+        fps = fps
     }
 end
 
