@@ -1,12 +1,13 @@
-Objects = require "objects.object"
-Room = require "objects.room"
-Sprite = require "objects.sprite"
-Tileset = require "tools.tileset"
-Tilemap = require "tools.tilemap"
-Vector = require "tools.vector"
-require "tools.mathfunctions"
+local path = (...):gsub("%.lib", "")
+Objects = require(path .. ".objects.object")
+Room = require(path .. ".objects.room")
+Sprite = require(path .. ".objects.sprite")
+Tileset = require(path .. ".tools.tileset")
+Tilemap = require(path .. ".tools.tilemap")
+Vector = require(path .. ".tools.vector")
+require(path .. ".tools.mathfunctions")
 
-local settings = require "settings"
+local settings = require(path .. ".settings")
 
 local module = {
     camera_x = 0,

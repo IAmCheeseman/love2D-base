@@ -75,6 +75,9 @@ end
 
 function module.draw_all()
     local tilemap = module.current
+    if tilemap == nil then
+        return
+    end
     
     if tilemap.background_image then
         local quad = love.graphics.newQuad(
