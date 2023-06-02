@@ -1,5 +1,4 @@
 local module = {}
-local aabbs = {}
 
 local function is_enclosing_point(self, x, y)
     return self.x + self.w > x and
@@ -19,16 +18,6 @@ function module.new(x, y, w, h, type, identifier)
         is_enclosing_point = is_enclosing_point,
     }
 
-    aabbs[identifier] = aabb
-
-    return aabb
-end
-
-function module.get_by_identifier(identifier)
-    local aabb = aabbs[identifier]
-    if aabb == nil then
-        error("AABB '" .. identifier .. "' does not exist.")
-    end
     return aabb
 end
 

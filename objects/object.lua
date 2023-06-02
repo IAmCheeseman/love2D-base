@@ -142,11 +142,15 @@ function module.create_type_from(name, inherited, object)
     object_types[name] = derived
 end
 
+function module.does_type_exist(type_name)
+    return object_types[type_name] ~= nil
+end
+
 --- Creates an object
 ---@param object_type string
 ---@return table
 function module.create_object(object_type)
-    if object_types[object_type] == nil then
+    if not module.does_type_exist(object_type) then
         error("Object of type `" .. object_type .. "` doesn't exist.")
     end
 

@@ -55,6 +55,12 @@ local function does_entity_have_tag(entity, tag)
 end
 
 function ldtk.onEntity(entity)
+    if not Objects.does_type_exist(entity.id) then
+        error("LDtk type '" .. entity.id .. "' does not exist. (Room '" .. module.level.id .. "')")
+    end
+
+    local object = Objects.create_object_at(entity.id, entity.x, entity.y)
+
     if does_entity_have_tag(entity, "AABB") then
         local aabb = AABB.new(
             entity.x, entity.y, 
@@ -66,10 +72,7 @@ function ldtk.onEntity(entity)
             end
         end
 
-        local object = Objects.create_object_at(entity.id, entity.x, entity.y)
         object.aabb = aabb
-    else
-        Objects.create_object_at(entity.id, entity.x, entity.y)
     end
 end
 
