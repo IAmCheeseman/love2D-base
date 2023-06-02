@@ -110,11 +110,19 @@ local function create_layer_object(self, data, auto)
     --getting tiles information
     if auto then
         self.tiles = data.autoLayerTiles
+        self.grid = {}
     else 
         self.tiles = data.gridTiles
     end
 
+    self.type = data.__type
+
+    if self.type == "IntGrid" then
+        self.grid = data.intGridCsv
+    end
+
     self._tilesLen = #self.tiles
+    self.gridSize = data.__gridSize
 
     self.relPath = data.__tilesetRelPath
     self.path = ldtk.getPath(data.__tilesetRelPath)
