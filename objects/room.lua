@@ -54,6 +54,7 @@ function ldtk.onLevelLoaded(level)
     bg_texture = love.graphics.newImage(ldtk_path .. level.backgroundImage)
     bg_texture:setWrap("repeat", "repeat")
     layers = {}
+    layer_draw_order = {}
 end
 
 function ldtk.onLayer(layer)
