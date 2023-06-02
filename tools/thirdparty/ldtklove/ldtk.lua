@@ -290,11 +290,15 @@ local types = {
             local props = {}
 
             for _, p in ipairs(value.fieldInstances) do
-                props[p.__identifier] = p.__value
+                props[p.__identifier] = {
+                    type = p.__type,
+                    value = p.__value
+                }
             end
 
             ldtk.onEntity({
                 id = value.__identifier,
+                gridSize = currentLayer.__gridSize,
                 x = value.px[1],
                 y = value.px[2],
                 width = value.width,

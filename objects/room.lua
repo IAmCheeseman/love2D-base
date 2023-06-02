@@ -54,23 +54,38 @@ local function does_entity_have_tag(entity, tag)
     return false
 end
 
+local function convert_property(property, entity)
+    if property.type == "Point" then
+        return { 
+            x = property.value.cx * entity.gridSize,
+            y = property.value.cy * entity.gridSize,
+        }
+    elseif property.type == "Array<Point>" then
+        local corrected = {}
+        for i, v in ipairs(property.value) do
+            table.insert(corrected, convert_property({ type = "Point", value = v }, entity))
+        end
+        return corrected
+    end
+
+    return property.value
+end
+
 function ldtk.onEntity(entity)
     if not Objects.does_type_exist(entity.id) then
         error("LDtk type '" .. entity.id .. "' does not exist. (Room '" .. module.level.id .. "')")
     end
 
     local object = Objects.create_object_at(entity.id, entity.x, entity.y)
+    for k, v in pairs(entity.props) do
+        object[k] = convert_property(v, entity)
+    end
 
     if does_entity_have_tag(entity, "AABB") then
         local aabb = AABB.new(
             entity.x, entity.y, 
             entity.width, entity.height, 
             entity.id, entity.props.identifier)
-        for k, v in pairs(entity.props) do
-            if k ~= "identifier" then
-                aabb[k] = v
-            end
-        end
 
         object.aabb = aabb
     end
