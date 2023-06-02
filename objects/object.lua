@@ -38,6 +38,9 @@ end
 
 function module.process_objects(dt)
     for _, object in ipairs(create_queue) do
+        table.insert(objects, object)
+    end
+    for _, object in ipairs(create_queue) do
         if object.on_create then
             object:on_create()
         end
@@ -149,7 +152,6 @@ function module.create_object(object_type)
 
     local object = deep_copy(object_types[object_type])
 
-    table.insert(objects, object)
     table.insert(create_queue, object)
 
     return object

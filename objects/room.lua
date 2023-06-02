@@ -45,8 +45,32 @@ function module.is_cell_filled(layer_name, x, y)
     return layer.grid[index] ~= 0
 end
 
+local function does_entity_have_tag(entity, tag)
+    for i, v in ipairs(entity.tags) do
+        if v == tag then
+            return true
+        end
+    end
+    return false
+end
+
 function ldtk.onEntity(entity)
-    Objects.create_object_at(entity.id, entity.x, entity.y)
+    if does_entity_have_tag(entity, "AABB") then
+        local aabb = AABB.new(
+            entity.x, entity.y, 
+            entity.width, entity.height, 
+            entity.id, entity.props.identifier)
+        for k, v in pairs(entity.props) do
+            if k ~= "identifier" then
+                aabb[k] = v
+            end
+        end
+
+        local object = Objects.create_object_at(entity.id, entity.x, entity.y)
+        object.aabb = aabb
+    else
+        Objects.create_object_at(entity.id, entity.x, entity.y)
+    end
 end
 
 function ldtk.onLevelLoaded(level)

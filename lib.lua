@@ -3,6 +3,7 @@ Objects = require(path .. "objects.object")
 Room = require(path .. "objects.room")
 Sprite = require(path .. "objects.sprite")
 Vector = require(path .. "tools.vector")
+AABB = require(path .. "tools.aabb")
 require(path .. "tools.mathfunctions")
 
 local settings = require(path .. ".settings")

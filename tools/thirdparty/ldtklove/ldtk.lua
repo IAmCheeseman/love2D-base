@@ -301,6 +301,7 @@ local types = {
                 height = value.height,
                 px = value.__pivot[1],
                 py = value.__pivot[2],
+                tags = value.__tags,
                 order = order,
                 visible = currentLayer.visible,
                 props = props
