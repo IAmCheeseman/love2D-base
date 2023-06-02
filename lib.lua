@@ -2,8 +2,6 @@ local path = (...):gsub("%lib", "")
 Objects = require(path .. "objects.object")
 Room = require(path .. "objects.room")
 Sprite = require(path .. "objects.sprite")
-Tileset = require(path .. "tools.tileset")
-Tilemap = require(path .. "tools.tilemap")
 Vector = require(path .. "tools.vector")
 require(path .. "tools.mathfunctions")
 
@@ -99,13 +97,14 @@ canvas:setFilter("nearest", "nearest")
 
 function love.draw()
     love.graphics.setCanvas(canvas)
-    love.graphics.clear(0.2, 0.2, 0.2)
+    local background_color = Room.level.backgroundColor
+    love.graphics.clear(background_color[1], background_color[2], background_color[3])
 
     love.graphics.translate(
         math.floor(-module.camera_x + sw / 2), 
         math.floor(-module.camera_y + sh / 2))
 
-    Tilemap.draw_all()
+    Room.draw()
     Objects.draw_objects()
     
     love.graphics.setCanvas()
