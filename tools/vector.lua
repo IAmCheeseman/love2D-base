@@ -45,6 +45,10 @@ function module.distance_between(x, y, xx, yy)
     return module.length(x - xx, y - yy)
 end
 
+function module.mdistance_between(x, y, xx, yy)
+    return math.abs(x - xx) + math.abs(y - yy)
+end
+
 --- Find the angle of a vector
 ---@param x number
 ---@param y number
