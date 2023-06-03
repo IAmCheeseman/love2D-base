@@ -32,6 +32,28 @@ local function draw_sprite(self, x, y)
         self.offset_x, self.offset_y)
 end
 
+local function copy_sprite(self)
+    return {
+        path = self.path,
+        texture = self.texture,
+        rotation = self.rotation,
+        scale_x = self.scale_x,
+        scale_y = self.scale_y,
+        offset_x = self.offset_x,
+        offset_y = self.offset_y,
+        frame_count = self.frame_count,
+        frame = self.frame,
+        animation_start = self.animation_start,
+        animation_end = self.animation_end,
+        is_playing = self.is_playing,
+        fps = self.fps,
+        _time = self._time,
+
+        draw = self.draw,
+        apply_animation = self.apply_animation,
+    }
+end
+
 local function apply_animation(self, animation)
     self.animation_start = animation.anim_start
     self.animation_end = animation.anim_end
@@ -79,6 +101,7 @@ function module.new(path, frame_count, fps)
         fps = fps,
         _time = 0,
 
+        copy = copy_sprite,
         draw = draw_sprite,
         apply_animation = apply_animation,
     }
