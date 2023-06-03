@@ -65,6 +65,7 @@ function module.default_draw(self)
 end
 
 function module.draw_objects()
+    local sorted_objects = table.sort(objects, function(a, b) return a.depth < b.depth end)
     for _, object in ipairs(objects) do
         love.graphics.setColor(1, 1, 1)
         object:on_draw()
@@ -98,6 +99,7 @@ function module.create_type(name, object)
 
     set_property_default(object, "x", 0)
     set_property_default(object, "y", 0)
+    set_property_default(object, "depth", 1)
     set_property_default(object, "pause_mode", "normally")
 
     object.type = name
