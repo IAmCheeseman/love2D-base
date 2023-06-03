@@ -99,7 +99,7 @@ function module.create_type(name, object)
 
     set_property_default(object, "x", 0)
     set_property_default(object, "y", 0)
-    set_property_default(object, "depth", 1)
+    set_property_default(object, "depth", 0)
     set_property_default(object, "pause_mode", "normally")
 
     object.type = name
