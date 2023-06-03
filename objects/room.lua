@@ -32,7 +32,7 @@ function module.change_to(room_name)
     ldtk:level(room_name)
 end
 
-function module.is_cell_filled(layer_name, x, y)
+function module.get_cell(layer_name, x, y)
     local layer = layers[layer_name]
     if layer.type ~= "IntGrid" then
         error("Can only test IntGrids.")
@@ -42,7 +42,7 @@ function module.is_cell_filled(layer_name, x, y)
     local layer_x = math.floor(x / layer.gridSize) + 1
     local layer_y = math.floor(y / layer.gridSize)
     local index = layer_y * height + layer_x
-    return layer.grid[index] ~= 0
+    return layer.grid[index]
 end
 
 local function does_entity_have_tag(entity, tag)
