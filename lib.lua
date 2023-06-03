@@ -13,15 +13,6 @@ local module = {
     camera_y = 0,
 }
 
-local loveMouseGetPosition = love.mouse.getPosition
-
-function love.mouse.getPosition()
-    local mx, my = loveMouseGetPosition()
-    mx = module.camera_x + mx / settings.scale
-    my = module.camera_y + my / settings.scale
-    return mx - settings.screen_width / 2, my - settings.screen_height / 2
-end
-
 function love.directorydropped(path)
     Objects.call_on_all("on_directory_drop", path)
 end
@@ -96,6 +87,30 @@ local sw, sh = settings.screen_width, settings.screen_height
 local canvas = love.graphics.newCanvas(sw + 1, sh + 1)
 canvas:setFilter("nearest", "nearest")
 
+local function get_draw_transform()
+    local ww, wh = love.graphics.getDimensions()
+
+    local w, h = ww + settings.screen_width, wh + settings.screen_height
+
+    while w > ww do
+        w = w - settings.screen_width
+    end
+    while h > wh do
+        h = h - settings.screen_height
+    end
+
+    local scale = w / settings.screen_width < h / settings.screen_height 
+        and w / settings.screen_width 
+        or  h / settings.screen_height
+    
+    w = settings.screen_width * scale
+    h = settings.screen_height * scale
+
+    local x, y = (ww - w) / 2, (wh - h) / 2
+
+    return x, y, scale
+end
+
 function love.draw()
     love.graphics.setCanvas(canvas)
     local background_color = Room.level.backgroundColor
@@ -113,7 +128,22 @@ function love.draw()
     love.graphics.translate(
         math.floor(module.camera_x - sw / 2), 
         math.floor(module.camera_y - sh / 2))
-    love.graphics.draw(canvas, -math.frac(module.camera_x), -math.frac(module.camera_y), 0, settings.scale, settings.scale)
+    
+    local x, y, scale = get_draw_transform()
+    love.graphics.draw(canvas, x, y, 0, scale, scale)
+end
+
+local loveMouseGetPosition = love.mouse.getPosition
+
+function love.mouse.getPosition()
+    local x, y, scale = get_draw_transform()
+    local mx, my = loveMouseGetPosition()
+    mx = mx - x
+    my = my - y
+
+    mx = module.camera_x + mx / scale
+    my = module.camera_y + my / scale
+    return mx - settings.screen_width / 2, my - settings.screen_height / 2
 end
 
 return module
