@@ -33,7 +33,7 @@ end
 ---@param xx number
 ---@param yy number
 function module.direction_between(x, y, xx, yy)
-    return module.normalized(x - xx, y - yy)
+    return module.normalized(xx - x, yy - y)
 end
 
 --- Finds the distance between two points
