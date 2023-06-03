@@ -130,7 +130,11 @@ function love.draw()
         math.floor(module.camera_y - sh / 2))
     
     local x, y, scale = get_draw_transform()
-    love.graphics.draw(canvas, x, y, 0, scale, scale)
+    local quad = love.graphics.newQuad(
+        math.frac(module.camera_x), math.frac(module.camera_y),
+        settings.screen_width, settings.screen_height,
+        canvas:getWidth(), canvas:getHeight())
+    love.graphics.draw(canvas, quad, x, y, 0, scale, scale)
 end
 
 local loveMouseGetPosition = love.mouse.getPosition
