@@ -117,7 +117,7 @@ end
 ---@param self table
 ---@param name string
 local function call_from_base(self, name, ...)
-    object_types[self.inherits_from][name](...)
+    object_types[self.inherits_from][name](self, ...)
 end
 
 --- Creates a new type that inherits from another type
@@ -208,12 +208,22 @@ function module.grab_object(object_type)
     return nil
 end
 
+local function is_type_correct(object, type)
+    if object.type == type or object.inherits_from == type then
+        return true
+    end
+
+    if object.inherits_from ~= nil then
+        return is_type_correct(object_types[object.inherits_from], type)
+    end
+end
+
 --- Run a function on every object of a specified type
 ---@param object_type string
 ---@param func function
 function module.with(object_type, func)
     for _, object in ipairs(objects) do
-        if object.type == object_type then
+        if is_type_correct(object, object_type) then
             func(object)
         end
     end
