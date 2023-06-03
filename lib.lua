@@ -93,7 +93,7 @@ function love.update(dt)
 end
 
 local sw, sh = settings.screen_width, settings.screen_height
-local canvas = love.graphics.newCanvas(sw, sh)
+local canvas = love.graphics.newCanvas(sw + 1, sh + 1)
 canvas:setFilter("nearest", "nearest")
 
 function love.draw()
@@ -113,7 +113,7 @@ function love.draw()
     love.graphics.translate(
         math.floor(module.camera_x - sw / 2), 
         math.floor(module.camera_y - sh / 2))
-    love.graphics.draw(canvas, 0, 0, 0, settings.scale, settings.scale)
+    love.graphics.draw(canvas, -math.frac(module.camera_x), -math.frac(module.camera_y), 0, settings.scale, settings.scale)
 end
 
 return module

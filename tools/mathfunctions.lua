@@ -27,3 +27,9 @@ function math.clamp(a, min, max)
     end
     return a
 end
+
+--- Returns the fraction of a number
+---@param a number
+function math.frac(a)
+    return a - math.floor(a)
+end
