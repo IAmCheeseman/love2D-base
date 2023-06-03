@@ -1,4 +1,4 @@
-local path = (...):gsub("%lib", "")
+local path = (...):gsub("%lib$", "")
 Objects = require(path .. "objects.object")
 Room = require(path .. "objects.room")
 Sprite = require(path .. "objects.sprite")

@@ -1,5 +1,5 @@
-local path = (...):gsub("%objects.object", "")
-local timers = require(path .. "objects.timer")
+local path = (...):gsub("%object$", "")
+local timers = require(path .. "timer")
 
 local module = {
     are_paused = false,

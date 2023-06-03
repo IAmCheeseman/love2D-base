@@ -1,6 +1,6 @@
 local module = {}
 
-local path = (...):gsub("objects.room", "")
+local path = (...):gsub("objects.room$", "")
 local ldtk = require(path .. "tools.thirdparty.ldtklove.ldtk")
 
 local ldtk_path = ""
