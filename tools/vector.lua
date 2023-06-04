@@ -24,7 +24,7 @@ end
 ---@param xx number
 ---@param yy number
 function module.dot(x, y, xx, yy)
-    return (x^2 + y^2) + (xx^2 + yy^2)
+    return x * xx + y * yy
 end
 
 --- Finds the direction between two points
