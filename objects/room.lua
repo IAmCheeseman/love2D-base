@@ -76,7 +76,7 @@ function ldtk.onEntity(entity)
         error("LDtk type '" .. entity.id .. "' does not exist. (Room '" .. module.level.id .. "')")
     end
 
-    local object = Objects.create_object_at(entity.id, entity.x, entity.y)
+    local object = Objects.instance_at(entity.id, entity.x, entity.y)
     for k, v in pairs(entity.props) do
         object[k] = convert_property(v, entity)
     end

@@ -151,7 +151,7 @@ end
 --- Creates an object
 ---@param object_type string
 ---@return table
-function module.create_object(object_type)
+function module.instance(object_type)
     if not module.does_type_exist(object_type) then
         error("Object of type `" .. object_type .. "` doesn't exist.")
     end
@@ -168,8 +168,8 @@ end
 ---@param x number
 ---@param y number
 ---@return table
-function module.create_object_at(object_type, x, y)
-    local object = module.create_object(object_type)
+function module.instance_at(object_type, x, y)
+    local object = module.instance(object_type)
     object.x = x
     object.y = y
     return object
@@ -177,7 +177,7 @@ end
 
 --- Destroys an object
 ---@param object table the object
-function module.destroy_object(object)
+function module.destroy(object)
     for i, v in ipairs(objects) do
         if v == object then
             table.remove(objects, i)
@@ -199,7 +199,7 @@ end
 
 --- Grabs the first object it sees of the specified type
 ---@param object_type string
-function module.grab_object(object_type)
+function module.grab(object_type)
     for _, object in ipairs(objects) do
         if object.type == object_type then
             return object
