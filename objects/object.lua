@@ -37,15 +37,17 @@ function module.process_object(object, dt)
 end
 
 function module.process_objects(dt)
+    -- Add each object first so objects can reference other objects made on the same frame
     for _, object in ipairs(create_queue) do
         table.insert(objects, object)
     end
-    for _, object in ipairs(create_queue) do
+    for i = #create_queue, 1, -1 do
+        local object = create_queue[i]
         if object.on_create then
             object:on_create()
         end
+        table.remove(create_queue, i)
     end
-    create_queue = {}
 
     for _, object in ipairs(objects) do
         if not is_object_paused(object) then
