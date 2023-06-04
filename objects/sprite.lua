@@ -20,8 +20,16 @@ local function draw_sprite(self, x, y)
         frame_size, h,
         w, h)
 
-    local center_x = (frame_size / 2) * self.scale_x
-    local center_y = (h / 2) * self.scale_y
+    local center_x
+    local center_y
+
+    if not self.center then
+        center_x = 0
+        center_y = 0
+    else
+        center_x = (frame_size / 2) * self.scale_x
+        center_y = (h / 2) * self.scale_y
+    end
 
     love.graphics.draw(
         self.texture,
@@ -47,6 +55,7 @@ local function copy_sprite(self)
         animation_end = self.animation_end,
         is_playing = self.is_playing,
         fps = self.fps,
+        center = self.center,
         _time = self._time,
 
         draw = self.draw,
@@ -99,6 +108,7 @@ function module.new(path, frame_count, fps)
         animation_end = frame_count,
         is_playing = false,
         fps = fps,
+        center = true,
         _time = 0,
 
         copy = copy_sprite,

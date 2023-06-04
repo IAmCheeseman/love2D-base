@@ -53,7 +53,11 @@ end
 ---@param x number
 ---@param y number
 function module.angle(x, y)
-    return math.atan2(y, x)
+    local angle = math.atan2(y, x)
+    if angle < 0 then
+        angle = angle + math.pi * 2
+    end
+    return angle
 end
 
 --- Finds the angle between two points
@@ -62,7 +66,7 @@ end
 ---@param xx number
 ---@param yy number
 function module.angle_between(x, y, xx, yy)
-    return module.angle(x - xx, y - yy)
+    return module.angle(xx - x, yy - y)
 end
 
 --- Get a vector pointing in the direction the specified keys would make
