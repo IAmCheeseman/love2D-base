@@ -220,6 +220,16 @@ local function is_type_correct(object, type)
     end
 end
 
+function module.count_type(object_type)
+    local count = 0
+    for _, object in ipairs(objects) do
+        if is_type_correct(object, object_type) then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 --- Run a function on every object of a specified type
 ---@param object_type string
 ---@param func function
