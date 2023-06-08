@@ -85,7 +85,9 @@ end
 
 local sw, sh = settings.screen_width, settings.screen_height
 local canvas = love.graphics.newCanvas(sw + 1, sh + 1)
+local gui = love.graphics.newCanvas(sw, sh)
 canvas:setFilter("nearest", "nearest")
+gui:setFilter("nearest", "nearest")
 
 local function get_draw_transform()
     local ww, wh = love.graphics.getDimensions()
@@ -123,11 +125,17 @@ function love.draw()
     Room.draw()
     Objects.draw_objects()
     
-    love.graphics.setCanvas()
+    love.graphics.setCanvas(gui)
+
+    love.graphics.clear(1, 1, 1, 0)
 
     love.graphics.translate(
         math.floor(module.camera_x - sw / 2), 
         math.floor(module.camera_y - sh / 2))
+
+    Objects.draw_gui()
+
+    love.graphics.setCanvas()
     
     local x, y, scale = get_draw_transform()
     local quad = love.graphics.newQuad(
@@ -135,6 +143,7 @@ function love.draw()
         settings.screen_width, settings.screen_height,
         canvas:getWidth(), canvas:getHeight())
     love.graphics.draw(canvas, quad, x, y, 0, scale, scale)
+    love.graphics.draw(gui, x, y, 0, scale, scale)
 end
 
 local loveMouseGetPosition = love.mouse.getPosition

@@ -74,6 +74,16 @@ function module.draw_objects()
     end
 end
 
+function module.draw_gui()
+    local sorted_objects = table.sort(objects, function(a, b) return a.depth < b.depth end)
+    for _, object in ipairs(objects) do
+        love.graphics.setColor(1, 1, 1)
+        if object.on_gui ~= nil then
+            object:on_gui()
+        end
+    end
+end
+
 --- Calls a function on every object that defines it
 ---@param function_name string
 function module.call_on_all(function_name, ...)
