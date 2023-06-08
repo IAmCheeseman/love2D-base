@@ -40,6 +40,7 @@ function module.process_objects(dt)
     -- Add each object first so objects can reference other objects made on the same frame
     for _, object in ipairs(create_queue) do
         table.insert(objects, object)
+        table.insert(object_types[object.type].instances, object)
     end
     for i = #create_queue, 1, -1 do
         local object = create_queue[i]
@@ -101,6 +102,13 @@ local function set_property_default(object, property, value)
     object[property] = value
 end
 
+local function create_type(type, name) 
+    object_types[name] = {
+        object = type,
+        instances = {}
+    }
+end
+
 --- Create an object type
 ---@param name string
 ---@param object function
@@ -122,14 +130,14 @@ function module.create_type(name, object)
         object.on_draw = module.default_draw
     end
 
-    object_types[name] = object
+    create_type(object, name)
 end
 
 --- Calls a function from the base type
 ---@param self table
 ---@param name string
 local function call_from_base(self, name, ...)
-    object_types[self.inherits_from][name](self, ...)
+    object_types[self.inherits_from].object[name](self, ...)
 end
 
 --- Creates a new type that inherits from another type
@@ -144,7 +152,7 @@ function module.create_type_from(name, inherited, object)
         error("'" .. name .. "' cannot inherit '" .. inherited .. "' because it does not exist.")
     end
 
-    local derived = deep_copy(object_types[inherited])
+    local derived = deep_copy(object_types[inherited].object)
 
     for k, v in pairs(object) do
         derived[k] = v
@@ -153,7 +161,7 @@ function module.create_type_from(name, inherited, object)
     derived.inherits_from = inherited
     derived.call_from_base = call_from_base
 
-    object_types[name] = derived
+    create_type(derived, name)
 end
 
 function module.does_type_exist(type_name)
@@ -168,7 +176,7 @@ function module.instance(object_type)
         error("Object of type `" .. object_type .. "` doesn't exist.")
     end
 
-    local object = deep_copy(object_types[object_type])
+    local object = deep_copy(object_types[object_type].object)
 
     table.insert(create_queue, object)
 
@@ -190,13 +198,22 @@ end
 --- Destroys an object
 ---@param object table the object
 function module.destroy(object)
+    local destroyed = false
     for i, v in ipairs(objects) do
         if v == object then
             table.remove(objects, i)
-            return true
+            destroyed = true
+            break
         end
     end
-    return false
+    for i, v in ipairs(object_types[object.type].instances) do
+        if v == object then
+            table.remove(object_types[object.type].instances, i)
+            destroyed = true
+            break
+        end
+    end
+    return destroyed
 end
 
 --- Clears all objects that are not persistent
@@ -207,17 +224,28 @@ function module.clear()
             table.remove(objects, i)
         end
     end
+
+    for _, type in pairs(object_types) do
+        for i = #type.instances, 1, -1 do
+            local object = type.instances[i]
+            if not object.persistent then
+                table.remove(type.instances, i)
+            end
+        end
+    end
 end
 
 --- Grabs the first object it sees of the specified type
 ---@param object_type string
 function module.grab(object_type)
-    for _, object in ipairs(objects) do
-        if object.type == object_type then
-            return object
-        end
+    if object_types[object_type] == nil then
+        error("Object of type `" .. object_type .. "` doesn't exist.")
     end
-    return nil
+    local instances = object_types[object_type].instances
+    if #instances == 0 then
+        return nil
+    end
+    return instances[1]
 end
 
 local function is_type_correct(object, type)
@@ -226,28 +254,29 @@ local function is_type_correct(object, type)
     end
 
     if object.inherits_from ~= nil then
-        return is_type_correct(object_types[object.inherits_from], type)
+        return is_type_correct(object_types[object.inherits_from].object, type)
     end
 end
 
 function module.count_type(object_type)
-    local count = 0
-    for _, object in ipairs(objects) do
-        if is_type_correct(object, object_type) then
-            count = count + 1
-        end
+    if object_types[object_type] == nil then
+        error("Object of type `" .. object_type .. "` doesn't exist.")
     end
-    return count
+    return #object_types[object_type].instances
 end
 
 --- Run a function on every object of a specified type
 ---@param object_type string
 ---@param func function
 function module.with(object_type, func)
-    for _, object in ipairs(objects) do
+    for _, object in ipairs(object_types[object_type].instances) do
         if is_type_correct(object, object_type) then
             func(object)
         end
+    end
+
+    if object_types[object_type].object.inherits_from ~= nil then
+        module.with(object_types[object_type].object.inherits_from, func)
     end
 end
 
