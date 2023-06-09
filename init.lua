@@ -11,6 +11,7 @@ local settings = require(path .. ".settings")
 local module = {
     camera_x = 0,
     camera_y = 0,
+    camera_scale = 1,
 }
 
 function love.directorydropped(path)
@@ -104,6 +105,8 @@ local function get_draw_transform()
     local scale = w / settings.screen_width < h / settings.screen_height 
         and w / settings.screen_width 
         or  h / settings.screen_height
+
+    scale = scale * Game.camera_scale
     
     w = settings.screen_width * scale
     h = settings.screen_height * scale
