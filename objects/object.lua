@@ -70,7 +70,7 @@ end
 function module.draw_objects()
     local sorted_objects = table.sort(objects, function(a, b) return a.depth < b.depth end)
     for _, object in ipairs(objects) do
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(1, 1, 1, 1)
         object:on_draw()
     end
 end

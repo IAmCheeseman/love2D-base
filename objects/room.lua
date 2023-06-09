@@ -30,6 +30,8 @@ function module.change_to(room_name)
     Objects.clear()
     module.current = room_name
     ldtk:level(room_name)
+
+    Objects.call_on_all("on_room_change", room_name)
 end
 
 function module.get_cell(layer_name, x, y)
