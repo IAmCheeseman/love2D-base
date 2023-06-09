@@ -102,10 +102,25 @@ local function set_property_default(object, property, value)
     object[property] = value
 end
 
+local function get_all_of_type(type, t)
+    t = t or {}
+
+    for _, v in ipairs(object_types[type].instances) do
+        table.insert(t, v)
+    end
+
+    for _, v in ipairs(object_types[type].derived_types) do
+        t = get_all_of_type(v, t)
+    end
+
+    return t
+end
+
 local function create_type(type, name) 
     object_types[name] = {
         object = type,
-        instances = {}
+        instances = {},
+        derived_types = {},
     }
 end
 
@@ -160,6 +175,8 @@ function module.create_type_from(name, inherited, object)
 
     derived.inherits_from = inherited
     derived.call_from_base = call_from_base
+
+    table.insert(object_types[inherited].derived_types, name)
 
     create_type(derived, name)
 end
@@ -262,22 +279,23 @@ function module.count_type(object_type)
     if object_types[object_type] == nil then
         error("Object of type `" .. object_type .. "` doesn't exist.")
     end
-    return #object_types[object_type].instances
+    local count = #object_types[object_type].instances
+    for _, v in ipairs(object_types[object_type].derived_types) do
+        count = count + module.count_type(v)
+    end
+    return count
 end
 
 --- Run a function on every object of a specified type
 ---@param object_type string
 ---@param func function
 function module.with(object_type, func)
-    for _, object in ipairs(object_types[object_type].instances) do
+    for _, object in ipairs(get_all_of_type(object_type)) do
         if is_type_correct(object, object_type) then
             func(object)
         end
     end
 
-    if object_types[object_type].object.inherits_from ~= nil then
-        module.with(object_types[object_type].object.inherits_from, func)
-    end
 end
 
 return module
