@@ -3,6 +3,7 @@ local module = {}
 local path = (...):gsub("objects.room$", "")
 local ldtk = require(path .. "tools.thirdparty.ldtklove.ldtk")
 
+local current = ""
 local ldtk_path = ""
 local bg_texture = nil
 local layers = {}
@@ -32,6 +33,12 @@ function module.change_to(room_name)
     ldtk:level(room_name)
 
     Objects.call_on_all("on_room_change", room_name)
+
+    current = room_name
+end
+
+function module.reset()
+    module.change_to(current)
 end
 
 function module.get_cell(layer_name, x, y)
