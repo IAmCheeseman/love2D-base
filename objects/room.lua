@@ -75,6 +75,13 @@ local function convert_property(property, entity)
             table.insert(corrected, convert_property({ type = "Point", value = v }, entity))
         end
         return corrected
+    elseif property.type == "Color" then
+       local rgb = ldtk.hex2rgb(property.value)
+       return {
+        r = rgb[1],
+        g = rgb[2],
+        b = rgb[3],
+       }
     end
 
     return property.value

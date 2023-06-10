@@ -71,7 +71,9 @@ function module.draw_objects()
     local sorted_objects = table.sort(objects, function(a, b) return a.depth < b.depth end)
     for _, object in ipairs(objects) do
         love.graphics.setColor(1, 1, 1, 1)
-        object:on_draw()
+        if object.visible then
+            object:on_draw()
+        end
     end
 end
 
@@ -79,7 +81,7 @@ function module.draw_gui()
     local sorted_objects = table.sort(objects, function(a, b) return a.depth < b.depth end)
     for _, object in ipairs(objects) do
         love.graphics.setColor(1, 1, 1)
-        if object.on_gui ~= nil then
+        if object.on_gui ~= nil and object.visible then
             object:on_gui()
         end
     end
@@ -135,6 +137,7 @@ function module.create_type(name, object)
     set_property_default(object, "x", 0)
     set_property_default(object, "y", 0)
     set_property_default(object, "depth", 0)
+    set_property_default(object, "visible", true)
     set_property_default(object, "pause_mode", "normally")
 
     object.type = name
