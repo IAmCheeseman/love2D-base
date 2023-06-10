@@ -130,7 +130,7 @@ function love.draw()
     
     love.graphics.setCanvas(gui)
 
-    love.graphics.clear(1, 1, 1, 0)
+    love.graphics.clear(0, 0, 0, 0)
 
     love.graphics.translate(
         math.floor(module.camera_x - sw / 2), 
