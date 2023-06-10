@@ -37,6 +37,10 @@ function module.change_to(room_name)
     current = room_name
 end
 
+function module.is_room_in_range(room) 
+    return room < ldtk.countOfLevels
+end
+
 function module.reset()
     module.change_to(current)
 end
