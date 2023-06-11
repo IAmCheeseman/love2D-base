@@ -209,7 +209,7 @@ function ldtk.onLevelCreated(level)
     end
 
     pathfinding_grid = grid(map)
-    pathfinder = jumper(pathfinding_grid, "THETASTAR", 0)
+    pathfinder = jumper(pathfinding_grid, "JPS", 0)
     -- pathfinder:setMode('ORTHOGONAL')
 end
 
