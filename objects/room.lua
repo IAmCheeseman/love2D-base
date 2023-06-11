@@ -83,8 +83,8 @@ function module.get_path(layer_name, sx, sy, ex, ey)
         error("Can only use IntGrids.")
     end
 
-    local rsx, rsy = math.floor(sx / layer.gridSize), math.floor(sy / layer.gridSize)
-    local rex, rey = math.floor(ex / layer.gridSize), math.floor(ey / layer.gridSize)
+    local rsx, rsy = math.floor((sx / layer.gridSize) / 2), math.floor((sy / layer.gridSize) / 2)
+    local rex, rey = math.floor((ex / layer.gridSize) / 2), math.floor((ey / layer.gridSize) / 2)
 
     local path, length = pathfinder:getPath(rsx, rsy, rex, rey)
     if path == nil then
@@ -102,9 +102,13 @@ function module.get_path(layer_name, sx, sy, ex, ey)
         end
     end
 
+    if n2 == nil then
+        return Vector.direction_between(sx, sy, ex, ey)
+    end
+
     return Vector.direction_between(
-        n1:getX() + layer.gridSize / 2, n1:getY() + layer.gridSize / 2, 
-        n2:getX() + layer.gridSize / 2, n2:getY() + layer.gridSize / 2)
+        n1:getX(), n1:getY(),
+        n2:getX(), n2:getY())
 end
 
 local function does_entity_have_tag(entity, tag)
@@ -188,10 +192,10 @@ end
 function ldtk.onLevelCreated(level)
     map = {}
 
-    for y = 1, level.height / 16 do
+    for y = 1, (level.height / 16) / 2 do
         table.insert(map, {})
-        for x = 1, level.width / 16 do
-            local cell = module.get_cell_l("Solids", x, y)
+        for x = 1, (level.width / 16) / 2 do
+            local cell = module.get_cell_l("Solids", x * 2, y * 2)
             local cell_is_walkable = false
             for _, v in ipairs(level.props.valid_cells) do
                 if cell == v then
@@ -208,8 +212,10 @@ function ldtk.onLevelCreated(level)
         end
     end
 
+    module.valid_cells = level.props.valid_cells
+
     pathfinding_grid = grid(map)
-    pathfinder = jumper(pathfinding_grid, "JPS", 0)
+    pathfinder = jumper(pathfinding_grid, "ASTAR", 0)
     -- pathfinder:setMode('ORTHOGONAL')
 end
 
