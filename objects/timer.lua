@@ -4,11 +4,14 @@ local module = {}
 ---@param self table
 ---@param time number? Default is what was last set
 local function timer_start(self, time)
-    time = time or self.total_time
-
-    self.total_time = time
-    self.time = time
+    self.total_time = time or self.total_time
+    self.time = self.total_time
     self.is_over = false
+end
+
+local function timer_stop(self)
+    self.total_time = -1
+    self.is_over = true
 end
 
 --- Create a timer
@@ -21,6 +24,7 @@ function module.create_timer(self, name, func, time)
 
     self.timers[name] = {
         start = timer_start,
+        stop = timer_stop,
         time = 0,
         total_time = time,
         is_over = false,
@@ -36,10 +40,10 @@ function module.process(object, dt)
         timer.time = timer.time - dt
 
         if timer.time < 0 and not timer.is_over then
+            timer.is_over = true
             if timer.func then
                 timer.func(object)
             end
-            timer.is_over = true
         end
     end
 end
