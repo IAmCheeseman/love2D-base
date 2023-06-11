@@ -37,10 +37,9 @@ function module.change_to(room_name)
     Objects.clear()
     module.current = room_name
     ldtk:level(room_name)
+    current = room_name
 
     Objects.call_on_all("on_room_change", room_name)
-
-    current = room_name
 end
 
 function module.is_room_in_range(room) 
@@ -216,6 +215,9 @@ function ldtk.onLevelCreated(level)
 
     pathfinding_grid = grid(map)
     pathfinder = jumper(pathfinding_grid, "ASTAR", 0)
+
+    module.room_width = level.width
+    module.room_height = level.height
     -- pathfinder:setMode('ORTHOGONAL')
 end
 

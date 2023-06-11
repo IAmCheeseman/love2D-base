@@ -1,6 +1,18 @@
 
 local module = {}
 
+local function get_frame(self)
+    local w, h = self.texture:getDimensions()
+
+    local frame = self.frame - 1
+    local frame_size = w / self.frame_count
+
+    return love.graphics.newQuad(
+        frame * frame_size, 0,
+        frame_size, h,
+        w, h)
+end
+
 --- Draws a sprite
 ---@param self table
 ---@param x number x axis
@@ -11,14 +23,9 @@ local function draw_sprite(self, x, y)
     end
 
     local w, h = self.texture:getDimensions()
-
-    local frame = self.frame - 1
     local frame_size = w / self.frame_count
 
-    local quad = love.graphics.newQuad(
-        frame * frame_size, 0,
-        frame_size, h,
-        w, h)
+    local quad = self:get_frame()
 
     local center_x
     local center_y
@@ -58,7 +65,9 @@ local function copy_sprite(self)
         center = self.center,
         _time = self._time,
 
+        copy = self.copy,
         draw = self.draw,
+        get_frame = self.get_frame,
         apply_animation = self.apply_animation,
     }
 end
@@ -113,6 +122,7 @@ function module.new(path, frame_count, fps)
 
         copy = copy_sprite,
         draw = draw_sprite,
+        get_frame = get_frame,
         apply_animation = apply_animation,
     }
 end
