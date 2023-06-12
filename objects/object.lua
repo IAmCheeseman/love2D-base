@@ -9,6 +9,18 @@ local objects = {}
 local object_types = {}
 local create_queue = {}
 
+local paused_sources = {}
+
+function module.toggle_pause()
+    module.are_paused = not module.are_paused
+    if module.are_paused then
+        paused_sources = love.audio.pause()
+    else
+        love.audio.play(paused_sources)
+        paused_sources = {}
+    end
+end
+
 local function deep_copy(t)
     local copy = {}
     for k, v in pairs(t) do
