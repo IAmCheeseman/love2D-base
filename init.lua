@@ -149,11 +149,22 @@ function love.draw()
     love.graphics.draw(gui, x, y, 0, scale, scale)
 end
 
-local loveMouseGetPosition = love.mouse.getPosition
+local get_mouse_position = love.mouse.getPosition
+
+function love.mouse.getWindowPosition()
+    local x, y, scale = get_draw_transform()
+    local mx, my = get_mouse_position()
+    mx = mx - x
+    my = my - y
+
+    mx =  mx / scale
+    my =  my / scale
+    return mx, my
+end
 
 function love.mouse.getPosition()
     local x, y, scale = get_draw_transform()
-    local mx, my = loveMouseGetPosition()
+    local mx, my = get_mouse_position()
     mx = mx - x
     my = my - y
 
