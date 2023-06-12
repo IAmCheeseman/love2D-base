@@ -188,6 +188,7 @@ function module.create_type_from(name, inherited, object)
         derived[k] = v
     end
 
+    derived.type = name
     derived.inherits_from = inherited
     derived.call_from_base = call_from_base
 
@@ -306,11 +307,8 @@ end
 ---@param func function
 function module.with(object_type, func)
     for _, object in ipairs(get_all_of_type(object_type)) do
-        if is_type_correct(object, object_type) then
-            func(object)
-        end
+        func(object)
     end
-
 end
 
 return module
