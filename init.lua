@@ -44,6 +44,10 @@ end
 
 
 function love.keypressed(key, scancode, is_repeat)
+    if key == "f11" then
+        love.window.setFullscreen(not love.window.getFullscreen())
+    end
+
     Objects.call_on_all("on_key_press", key, scancode, is_repeat)
 end
 
