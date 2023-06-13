@@ -27,7 +27,7 @@ function module.create_timer(self, name, func, time)
         stop = timer_stop,
         time = 0,
         total_time = time,
-        is_over = false,
+        is_over = true,
         func = func
     }
 end
