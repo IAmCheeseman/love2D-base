@@ -218,6 +218,8 @@ function ldtk.onLevelCreated(level)
 
     module.room_width = level.width
     module.room_height = level.height
+
+    module.properties = level.props
     -- pathfinder:setMode('ORTHOGONAL')
 end
 

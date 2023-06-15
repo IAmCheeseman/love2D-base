@@ -44,7 +44,8 @@ local function draw_sprite(self, x, y)
         math.floor(x - center_x), math.floor(y - center_y),
         self.rotation,
         self.scale_x, self.scale_y,
-        self.offset_x, self.offset_y)
+        self.offset_x, self.offset_y,
+        self.skew_x, self.skew_y)
 end
 
 local function copy_sprite(self)
@@ -56,6 +57,8 @@ local function copy_sprite(self)
         scale_y = self.scale_y,
         offset_x = self.offset_x,
         offset_y = self.offset_y,
+        skew_x = self.skew_x,
+        skew_y = self.skew_y,
         frame_count = self.frame_count,
         frame = self.frame,
         animation_start = self.animation_start,
@@ -111,6 +114,8 @@ function module.new(path, frame_count, fps)
         scale_y = 1,
         offset_x = 0,
         offset_y = 0,
+        skew_x = 0,
+        skew_y = 0,
         frame_count = frame_count,
         frame = 1,
         animation_start = 1,
