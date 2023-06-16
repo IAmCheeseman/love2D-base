@@ -9,6 +9,9 @@ local objects = {}
 local object_types = {}
 local create_queue = {}
 
+local type_queue = {}
+local init_queue = {}
+
 local paused_sources = {}
 
 function module.toggle_pause()
@@ -130,37 +133,15 @@ local function get_all_of_type(type, t)
     return t
 end
 
-local function create_type(type, name) 
-    object_types[name] = {
-        object = type,
-        instances = {},
-        derived_types = {},
-    }
-end
-
 --- Create an object type
 ---@param name string
 ---@param object function
 function module.create_type(name, object)
-    if object_types[name] ~= nil then
-        error("Object with the name of '" .. name .. "' already exists.")
-    end
-
-    set_property_default(object, "x", 0)
-    set_property_default(object, "y", 0)
-    set_property_default(object, "depth", 0)
-    set_property_default(object, "visible", true)
-    set_property_default(object, "pause_mode", "normally")
-
-    object.type = name
-    object.create_timer = timers.create_timer
-    object.timers = {}
-
-    if object.on_draw == nil then
-        object.on_draw = module.default_draw
-    end
-
-    create_type(object, name)
+    table.insert(type_queue, {
+        name = name,
+        object = object,
+        inherits = ""
+    })
 end
 
 --- Calls a function from the base type
@@ -175,29 +156,19 @@ end
 ---@param inherited string
 ---@param object table
 function module.create_type_from(name, inherited, object)
-    if object_types[name] ~= nil then
-        error("Object with the name of '" .. name .. "' already exists.")
-    end
-    if object_types[inherited] == nil then
-        error("'" .. name .. "' cannot inherit '" .. inherited .. "' because it does not exist.")
-    end
-
-    local derived = deep_copy(object_types[inherited].object)
-
-    for k, v in pairs(object) do
-        derived[k] = v
-    end
-
-    derived.type = name
-    derived.inherits_from = inherited
-    derived.call_from_base = call_from_base
-
-    table.insert(object_types[inherited].derived_types, name)
-
-    create_type(derived, name)
+    table.insert(type_queue, {
+        name = name,
+        object = object,
+        inherits = inherited
+    })
 end
 
 function module.does_type_exist(type_name)
+    for _, v in ipairs(type_queue) do
+        if v.name == type_name then
+            return true
+        end
+    end 
     return object_types[type_name] ~= nil
 end
 
@@ -226,6 +197,10 @@ function module.instance_at(object_type, x, y)
     object.x = x
     object.y = y
     return object
+end
+
+function module.initial_object(object_type)
+    table.insert(init_queue, object_type)
 end
 
 --- Destroys an object
@@ -309,6 +284,96 @@ function module.with(object_type, func)
     for _, object in ipairs(get_all_of_type(object_type)) do
         func(object)
     end
+end
+
+local function create_type(type, name) 
+    object_types[name] = {
+        object = type,
+        instances = {},
+        derived_types = {},
+    }
+end
+
+local function define_type_name(name, from)
+    for i = from, 1, -1 do
+        local t = type_queue[i]
+        if t.name == name then
+            module.define_type(i, t)
+            table.remove(type_queue, i)
+            return true 
+        end
+    end
+
+    return false
+end
+
+function module.define_type(i, t)
+    print(t.name)
+    if object_types[t.name] ~= nil then
+        error("Object with the name of '" .. t.name .. "' already exists.")
+    end
+
+    local object = t.object 
+    local inherited_type_deleted = false
+
+    if t.inherits ~= "" then
+        if object_types[t.inherits] == nil then
+            if not define_type_name(t.inherits, i) then
+                error("'" .. t.name .. "' cannot inherit '" .. t.inherits .. "' because it does not exist.")
+            end
+            inherited_type_deleted = true
+        end
+    
+        object = deep_copy(object_types[t.inherits].object)
+    
+        for k, v in pairs(t.object) do
+            object[k] = v
+        end
+    
+        object.inherits_from = t.inherits
+        object.call_from_base = call_from_base
+
+        table.insert(object_types[t.inherits].derived_types, t.name)
+    end
+
+    set_property_default(object, "x", 0)
+    set_property_default(object, "y", 0)
+    set_property_default(object, "depth", 0)
+    set_property_default(object, "visible", true)
+    set_property_default(object, "pause_mode", "normally")
+
+    object.type = t.name
+    object.create_timer = timers.create_timer
+    object.timers = {}
+
+    if object.on_draw == nil then
+        object.on_draw = module.default_draw
+    end
+
+    create_type(object, t.name)
+
+    return inherited_type_deleted
+end
+
+function module.define_types()
+    local inherited_type_deleted = false
+    for i = #type_queue, 1, -1 do
+        if inherited_type_deleted then -- skip ahead because the inherited property was removed
+            print("Skipped: ", type_queue[i].name)
+            inherited_type_deleted = false
+        else
+            local t = type_queue[i]
+            inherited_type_deleted = module.define_type(i, t)
+        end
+    end
+
+    print("------------")
+    
+    for _, t in ipairs(init_queue) do
+        print(t)
+        module.instance(t)
+    end
+    init_queue = {}
 end
 
 return module
