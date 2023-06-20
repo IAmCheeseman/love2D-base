@@ -308,7 +308,6 @@ local function define_type_name(name, from)
 end
 
 function module.define_type(i, t)
-    print(t.name)
     if object_types[t.name] ~= nil then
         error("Object with the name of '" .. t.name .. "' already exists.")
     end
@@ -359,18 +358,14 @@ function module.define_types()
     local inherited_type_deleted = false
     for i = #type_queue, 1, -1 do
         if inherited_type_deleted then -- skip ahead because the inherited property was removed
-            print("Skipped: ", type_queue[i].name)
             inherited_type_deleted = false
         else
             local t = type_queue[i]
             inherited_type_deleted = module.define_type(i, t)
         end
     end
-
-    print("------------")
     
     for _, t in ipairs(init_queue) do
-        print(t)
         module.instance(t)
     end
     init_queue = {}
